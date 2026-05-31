@@ -9,6 +9,11 @@ namespace TeleCare.Data
             : base(options)
         {
         }
+
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<VisitNote> VisitNotes { get; set; }
+        public DbSet<Alert> Alerts { get; set; }
+
         public DbSet<PatientModel> Patients { get; set; }
         public DbSet<EnrollmentModel> Enrollments { get; set; }
         public DbSet<TelemetryPointModel> TelemetryPoints { get; set; }
