@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TeleCare.Model;
 
 namespace TeleCare.Data
 {
@@ -8,5 +9,10 @@ namespace TeleCare.Data
             : base(options)
         {
         }
+
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<VisitNote> VisitNotes { get; set; }
+        public DbSet<Alert> Alerts { get; set; }
+
     }
 }
