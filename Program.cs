@@ -25,6 +25,15 @@ builder.Services.AddScoped<IAdherenceService, AdherenceService>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+builder.Services.AddScoped<IVisitNoteRepository, VisitNoteRepository>();
+builder.Services.AddScoped<IVisitNoteService, VisitNoteService>();
+
+builder.Services.AddScoped<IAlertRepository, AlertRepository>();
+builder.Services.AddScoped<IAlertService, AlertService>();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
