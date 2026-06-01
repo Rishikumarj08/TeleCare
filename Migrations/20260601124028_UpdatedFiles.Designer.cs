@@ -12,8 +12,8 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601104420_FinalMerge")]
-    partial class FinalMerge
+    [Migration("20260601124028_UpdatedFiles")]
+    partial class UpdatedFiles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

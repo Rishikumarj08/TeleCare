@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeleCare.Migrations
 {
     /// <inheritdoc />
-    public partial class FinalMerge : Migration
+    public partial class UpdatedFiles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
