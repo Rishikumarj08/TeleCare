@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> createAdherenceRecord([FromBody] AdherenceCreateDto adherenceCreateDtodto)
         {
             if (adherenceCreateDtodto == null) return BadRequest(AdherenceConstants.RequestBodyNull);
@@ -26,6 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{adherenceId}")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> getAdherenceDetailsByAdhID(int adherenceId)
         {
             if (adherenceId <= 0) return BadRequest(AdherenceConstants.InvalidAdherenceId);
@@ -37,6 +40,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{adherenceId}")]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> updateAdherenceDetailsByAdhID(int adherenceId, [FromBody] AdherenceUpdateDto adherenceUpdateDtodto)
         {
             if (adherenceId <= 0) 
@@ -49,6 +53,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> getFilteredAdherenceRecords([FromQuery] AdherenceQueryDto adherenceQueryDtodto)
         {
             return Ok(await adherenceService.getFilteredAdherenceRecordsAsync(adherenceQueryDtodto));

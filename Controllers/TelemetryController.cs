@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> createTelemetryRecord([FromBody] TelemetryCreateDto telemetryCreateDto)
         {
             if (telemetryCreateDto == null) return BadRequest(TelemetryConstants.RequestBodyNull);
@@ -26,6 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{telemetryId}")]
+        [Authorize(Roles = "Patient, Clinician")]
         public async Task<IActionResult> getTelemetryDetailsByTelemetryId(int telemetryId)
         {
             if (telemetryId <= 0) return BadRequest(TelemetryConstants.InvalidTelemetryId);
@@ -37,6 +40,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Patient, Clinician")]
         public async Task<IActionResult> getFilteredTelemetryRecords([FromQuery] TelemetryQueryDto telemetryQueryDto)
         {
             return Ok(await telemetryService.getFilteredTelemetryRecordsAsync(telemetryQueryDto));

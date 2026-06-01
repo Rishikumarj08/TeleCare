@@ -19,7 +19,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet]
-        // [Authorize(Roles = "Admin,Patient,CareCoordinator")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetAllCarePlans([FromQuery] CarePlanSearchDTO dto)
         {
             var result = await _service.GetAllCarePlansAsync(dto);
@@ -27,7 +27,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{id}")]
-        // [Authorize(Roles = "Admin,Patient,CareCoordinator")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetById(int id)
         {
             if (id <= 0)
@@ -42,7 +42,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
-        // [Authorize(Roles = "Admin,CareCoordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> Create([FromBody] CarePlanCreateDTO dto)
         {
             if (!ModelState.IsValid || dto == null)
@@ -54,7 +54,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{id}")]
-        // [Authorize(Roles = "Admin,CareCoordinator")]
+        [Authorize(Roles = "CareCoordinator")]
 
         public async Task<IActionResult> Update(int id, [FromBody] CarePlanUpdateDTO dto)
         {
