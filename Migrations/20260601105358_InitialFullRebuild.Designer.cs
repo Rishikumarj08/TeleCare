@@ -12,7 +12,7 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601071500_InitialFullRebuild")]
+    [Migration("20260601105358_InitialFullRebuild")]
     partial class InitialFullRebuild
     {
         /// <inheritdoc />
@@ -172,7 +172,6 @@ namespace TeleCare.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChargeID"));
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Date")
@@ -201,11 +200,9 @@ namespace TeleCare.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimID"));
 
                     b.Property<decimal>("AmountBilled")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("AmountPaid")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PatientID")
@@ -426,7 +423,6 @@ namespace TeleCare.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ClaimID")

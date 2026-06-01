@@ -101,7 +101,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Enter your JWT token",
+        Description = "Paste only the JWT token (without 'Bearer ' prefix).",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
@@ -109,7 +109,10 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT"
     });
 
-    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement());
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        { new OpenApiSecuritySchemeReference("Bearer", document, null), new List<string>() }
+    });
 });
 
 // ✅ Authentication
@@ -146,8 +149,13 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 // ✅ Swagger (Development Only)
 if (app.Environment.IsDevelopment())
 {
+    app.UseStaticFiles();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        // Inject our small helper to set a token and attach it to requests.
+        options.InjectJavascript("/swagger-ui/swagger-custom.js");
+    });
 }
 
 // Middleware Pipeline

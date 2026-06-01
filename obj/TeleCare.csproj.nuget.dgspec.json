@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {}
+    "C:\\UseCase-SourceCode\\TeleCare\\TeleCare.csproj": {}
   },
   "projects": {
-    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {
+    "C:\\UseCase-SourceCode\\TeleCare\\TeleCare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
+        "projectUniqueName": "C:\\UseCase-SourceCode\\TeleCare\\TeleCare.csproj",
         "projectName": "TeleCare",
-        "projectPath": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
-        "packagesPath": "C:\\Users\\2499360\\.nuget\\packages\\",
-        "outputPath": "C:\\UseCase - SourceCode\\TeleCare\\obj\\",
+        "projectPath": "C:\\UseCase-SourceCode\\TeleCare\\TeleCare.csproj",
+        "packagesPath": "C:\\Users\\2499183\\.nuget\\packages\\",
+        "outputPath": "C:\\UseCase-SourceCode\\TeleCare\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\2499360\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\2499183\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -80,11 +74,11 @@
             },
             "Microsoft.OpenApi": {
               "target": "Package",
-              "version": "[2.4.1, )"
+              "version": "[2.7.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[10.2.0, )"
+              "version": "[10.2.1, )"
             }
           },
           "imports": [
@@ -106,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
