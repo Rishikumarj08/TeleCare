@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using TeleCare.Model;
  
+
 namespace TeleCare.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
  
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -69,7 +70,20 @@ namespace TeleCare.Data
                 .HasForeignKey(n => n.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<VisitNote> VisitNotes { get; set; }
+        public DbSet<Alert> Alerts { get; set; }
+
+        public DbSet<PatientModel> Patients { get; set; }
+        public DbSet<EnrollmentModel> Enrollments { get; set; }
+        public DbSet<TelemetryPointModel> TelemetryPoints { get; set; }
+        public DbSet<AdherenceRecordModel> AdherenceRecords { get; set; }
+        public DbSet<DeviceModel> Devices { get; set; }
+        
     }
 }
  
  
+
+
