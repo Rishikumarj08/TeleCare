@@ -12,13 +12,13 @@ namespace TeleCare.Model
         public int PatientReferenceNumber { get; set; }
 
         [Required(ErrorMessage = "Alert type is required.")]
-        public string AlertType { get; set; }
+        public required string AlertType { get; set; }
 
         [Required(ErrorMessage = "Alert severity is required.")]
         public AlertSeverityEnum AlertSeverity { get; set; }
 
         [Required(ErrorMessage = "Alert message is required.")]
-        public string Message { get; set; }
+        public required string Message { get; set; }
 
         [Required(ErrorMessage = "Alert status is required.")]
         public AlertStatusEnum AlertStatus { get; set; }

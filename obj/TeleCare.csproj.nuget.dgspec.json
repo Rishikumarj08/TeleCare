@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {}
+    "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {}
   },
   "projects": {
-    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {
+    "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
+        "projectUniqueName": "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
         "projectName": "TeleCare",
-        "projectPath": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
+        "projectPath": "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
         "packagesPath": "C:\\Users\\2499058\\.nuget\\packages\\",
-        "outputPath": "C:\\UseCase - SourceCode\\TeleCare\\obj\\",
+        "outputPath": "c:\\UseCase - SourceCode\\TeleCare\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\2499058\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -46,6 +46,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.8, )"
@@ -70,9 +74,13 @@
               "target": "Package",
               "version": "[10.0.8, )"
             },
+            "Microsoft.OpenApi": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[10.1.7, )"
+              "version": "[10.2.0, )"
             }
           },
           "imports": [

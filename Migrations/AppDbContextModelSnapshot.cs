@@ -122,6 +122,7 @@ namespace TeleCare.Migrations
                     b.ToTable("Appointments");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("TeleCare.Model.CarePlan", b =>
                 {
                     b.Property<int>("CarePlanID")
@@ -136,11 +137,26 @@ namespace TeleCare.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("EndDate")
+=======
+            modelBuilder.Entity("TeleCare.Model.Charge", b =>
+                {
+                    b.Property<int>("ChargeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChargeID"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Date")
+>>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<string>("PlanName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -158,6 +174,53 @@ namespace TeleCare.Migrations
                     b.HasKey("CarePlanID");
 
                     b.ToTable("CarePlans");
+=======
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ChargeID");
+
+                    b.HasIndex("PatientID");
+
+                    b.ToTable("Charges");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Claim", b =>
+                {
+                    b.Property<int>("ClaimID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimID"));
+
+                    b.Property<decimal>("AmountBilled")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PayerID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ClaimID");
+
+                    b.HasIndex("PatientID");
+
+                    b.HasIndex("PayerID");
+
+                    b.ToTable("Claims");
+>>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
                 });
 
             modelBuilder.Entity("TeleCare.Model.DeviceModel", b =>
@@ -229,6 +292,39 @@ namespace TeleCare.Migrations
                     b.ToTable("Enrollments");
                 });
 
+            modelBuilder.Entity("TeleCare.Model.Notification", b =>
+                {
+                    b.Property<int>("NotificationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("TeleCare.Model.PatientModel", b =>
                 {
                     b.Property<int>("PatientID")
@@ -291,6 +387,7 @@ namespace TeleCare.Migrations
                     b.ToTable("Patients");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("TeleCare.Model.ProgramModel", b =>
                 {
                     b.Property<int>("ProgramID")
@@ -366,6 +463,140 @@ namespace TeleCare.Migrations
                     b.HasKey("MedicationId");
 
                     b.ToTable("Medications");
+=======
+            modelBuilder.Entity("TeleCare.Model.Payer", b =>
+                {
+                    b.Property<int>("PayerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PayerID"));
+
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PayerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PayerID");
+
+                    b.ToTable("Payers");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ClaimID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DatePaid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("ClaimID");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Role", b =>
+                {
+                    b.Property<int>("RoleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleID");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleID = 1,
+                            RoleName = "Patient"
+                        },
+                        new
+                        {
+                            RoleID = 2,
+                            RoleName = "Clinician"
+                        },
+                        new
+                        {
+                            RoleID = 3,
+                            RoleName = "Care Coordinator"
+                        },
+                        new
+                        {
+                            RoleID = 4,
+                            RoleName = "Device Technician"
+                        },
+                        new
+                        {
+                            RoleID = 5,
+                            RoleName = "Administrator"
+                        },
+                        new
+                        {
+                            RoleID = 6,
+                            RoleName = "Auditor"
+                        });
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Rule", b =>
+                {
+                    b.Property<int>("RuleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RuleID"));
+
+                    b.Property<DateTime?>("ActiveFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ActiveTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RuleID");
+
+                    b.ToTable("Rules");
+>>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
                 });
 
             modelBuilder.Entity("TeleCare.Model.TelemetryPointModel", b =>
@@ -414,6 +645,58 @@ namespace TeleCare.Migrations
                     b.ToTable("TelemetryPoints");
                 });
 
+            modelBuilder.Entity("TeleCare.Model.User", b =>
+                {
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MFAEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserID");
+
+                    b.HasIndex("RoleID");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("TeleCare.Model.VisitNote", b =>
                 {
                     b.Property<int>("Id")
@@ -452,6 +735,71 @@ namespace TeleCare.Migrations
                     b.ToTable("VisitNotes");
                 });
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity("TeleCare.Model.Charge", b =>
+                {
+                    b.HasOne("TeleCare.Model.User", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Claim", b =>
+                {
+                    b.HasOne("TeleCare.Model.User", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TeleCare.Model.Payer", "Payer")
+                        .WithMany()
+                        .HasForeignKey("PayerID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Payer");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Notification", b =>
+                {
+                    b.HasOne("TeleCare.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Payment", b =>
+                {
+                    b.HasOne("TeleCare.Model.Claim", "Claim")
+                        .WithMany()
+                        .HasForeignKey("ClaimID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Claim");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.User", b =>
+                {
+                    b.HasOne("TeleCare.Model.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+>>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
 #pragma warning restore 612, 618
         }
     }

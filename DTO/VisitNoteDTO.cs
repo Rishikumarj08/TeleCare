@@ -8,13 +8,13 @@ namespace TeleCare.DTO
 
         public int PatientReferenceNumber { get; set; }
 
-        public string Notes { get; set; }
+        public required string Notes { get; set; }
 
-        public string Diagnosis { get; set; }
+        public required string Diagnosis { get; set; }
 
-        public string Orders { get; set; }
+        public required string Orders { get; set; }
 
-        public string AttachmentName { get; set; }
+        public required string AttachmentName { get; set; }
 
         public VisitNoteStatusEnum VisitNoteStatus { get; set; }
     }

@@ -15,10 +15,10 @@ namespace TeleCare.Model
         public DateTime AppointmentDateTime { get; set; }
 
         [Required(ErrorMessage = "Appointment type is required.")]
-        public string AppointmentType { get; set; }
+        public required string AppointmentType { get; set; }
 
         [Required(ErrorMessage = "Appointment mode is required.")]
-        public string AppointmentMode { get; set; }
+        public required string AppointmentMode { get; set; }
 
         [Required(ErrorMessage = "Appointment status is required.")]
         public AppointmentStatusEnum AppointmentStatus { get; set; }
