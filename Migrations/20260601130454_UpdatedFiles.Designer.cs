@@ -12,8 +12,8 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601120859_StoreEnumsAsStrings")]
-    partial class StoreEnumsAsStrings
+    [Migration("20260601130454_UpdatedFiles")]
+    partial class UpdatedFiles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

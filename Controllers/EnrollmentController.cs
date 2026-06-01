@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> createEnrollmentRecord([FromBody] EnrollmentCreateDto enrollmentCreateDto)
         {
             if (enrollmentCreateDto == null) return BadRequest(EnrollmentConstants.RequestBodyNull);
@@ -26,6 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{enrollmentId}")]
+        [Authorize(Roles = "Patient, CareCoordinator")]
         public async Task<IActionResult> getEnrollmentDetailsByEnrollID(int enrollmentId)
         {
             if (enrollmentId <= 0) return BadRequest(EnrollmentConstants.InvalidEnrollmentId);
@@ -37,6 +40,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{enrollmentId}")]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> updateEnrollmentDetailsByEnrollID(int enrollmentId, [FromBody] EnrollmentUpdateDto enrollmentUpdateDto)
         {
             if (enrollmentId <= 0) 
@@ -49,6 +53,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Patient, CareCoordinator")]
         public async Task<IActionResult> getFilteredEnrollmentRecords([FromQuery] EnrollmentQueryDto enrollmentQueryDto)
         {
             return Ok(await enrollmentService.getFilteredEnrollmentRecordsAsync(enrollmentQueryDto));

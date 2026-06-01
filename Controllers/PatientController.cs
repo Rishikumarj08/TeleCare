@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> createPatientRecord([FromBody] PatientCreateDto patientCreateDto)
         {
             if (patientCreateDto == null) return BadRequest(PatientConstants.RequestBodyNull);
@@ -26,6 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{patientId}")]
+        [Authorize(Roles = "Patient,CareCoordinator,Clinician")]
         public async Task<IActionResult> getPatientDetailsByPatientId(int patientId)
         {
             if (patientId <= 0) return BadRequest(PatientConstants.InvalidPatientId);
@@ -37,6 +40,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{patientId}")]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> updatePatientDetailsByPatientId(int patientId, [FromBody] PatientUpdateDto patientUpdateDto)
         {
             if (patientId <= 0) 
@@ -49,6 +53,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Patient,CareCoordinator,Clinician")]
         public async Task<IActionResult> getFilteredPatientRecords([FromQuery] PatientQueryDto patientQueryDto)
         {
             return Ok(await patientService.getFilteredPatientRecordsAsync(patientQueryDto));
