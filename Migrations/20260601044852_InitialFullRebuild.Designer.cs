@@ -12,8 +12,8 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260531160414_InitialMerged")]
-    partial class InitialMerged
+    [Migration("20260601044852_InitialFullRebuild")]
+    partial class InitialFullRebuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

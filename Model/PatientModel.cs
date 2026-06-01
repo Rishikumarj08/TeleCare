@@ -33,7 +33,7 @@ namespace TeleCare.Model
             public required string PrimaryLanguage { get; set; }
             public required string EmergencyContactJSON { get; set; }
         public bool ConsentStatus { get; set; }
-        public string EnrolledProgramsJSON { get; set; }
+        public required string EnrolledProgramsJSON { get; set; }
         public PatientStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }

@@ -12,9 +12,11 @@ using TeleCare.Service.Interface;
 public class AdminChargeController : ControllerBase
 {
     private readonly IChargeService _chargeService;
+    // Constructor to inject the charge service
  
     public AdminChargeController(IChargeService chargeService)
     {
+        
         _chargeService = chargeService;
     }
  
