@@ -12,7 +12,7 @@ namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260528152907_InitialCreate")]
-    partial class InitialCreate
+    partial class InitialCreate_20260528152907
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

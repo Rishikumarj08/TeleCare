@@ -112,34 +112,6 @@ namespace TeleCare.Migrations
                     b.ToTable("Programs");
                 });
 
-            modelBuilder.Entity("TeleCare.Models.AdherenceRecord", b =>
-                {
-                    b.Property<int>("AdhID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdhID"));
-
-                    b.Property<int>("MedID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Source")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TakenAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AdhID");
-
-                    b.ToTable("AdherenceRecords");
-                });
-
             modelBuilder.Entity("TeleCare.Models.Medication", b =>
                 {
                     b.Property<int>("MedicationId")

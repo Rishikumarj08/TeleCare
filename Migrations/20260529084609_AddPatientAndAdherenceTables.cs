@@ -24,23 +24,6 @@ namespace TeleCare.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.CreateTable(
-                name: "AdherenceRecords",
-                columns: table => new
-                {
-                    AdhID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MedID = table.Column<int>(type: "int", nullable: false),
-                    PatientID = table.Column<int>(type: "int", nullable: false),
-                    TakenAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Source = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AdherenceRecords", x => x.AdhID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
@@ -69,9 +52,6 @@ namespace TeleCare.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AdherenceRecords");
-
             migrationBuilder.DropTable(
                 name: "Patients");
 

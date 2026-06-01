@@ -22,6 +22,106 @@ namespace TeleCare.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TeleCare.Model.AdherenceRecordModel", b =>
+                {
+                    b.Property<int>("AdhID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdhID"));
+
+                    b.Property<int>("MedID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TakenAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AdhID");
+
+                    b.ToTable("AdherenceRecords");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Alert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlertSeverity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AlertStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AlertType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientReferenceNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Alerts");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AppointmentDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AppointmentMode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AppointmentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppointmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PatientReferenceNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("TeleCare.Model.CarePlan", b =>
                 {
                     b.Property<int>("CarePlanID")
@@ -32,7 +132,8 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -42,7 +143,8 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("PlanName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ProgramID")
                         .HasColumnType("int");
@@ -58,16 +160,60 @@ namespace TeleCare.Migrations
                     b.ToTable("CarePlans");
                 });
 
-            modelBuilder.Entity("TeleCare.Model.Enrollment", b =>
+            modelBuilder.Entity("TeleCare.Model.DeviceModel", b =>
                 {
-                    b.Property<int>("EnrollmentID")
+                    b.Property<int>("DeviceID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeviceID"));
 
-                    b.Property<DateTime>("EnrollmentDate")
+                    b.Property<int?>("AssignedToPatientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeviceType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("ProvisionedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("DeviceID");
+
+                    b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.EnrollmentModel", b =>
+                {
+                    b.Property<int>("EnrollID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollID"));
+
+                    b.Property<string>("ConsentDocumentURI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EnrolledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EnrolledBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
@@ -78,44 +224,12 @@ namespace TeleCare.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("EnrollmentID");
+                    b.HasKey("EnrollID");
 
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("TeleCare.Model.FollowUp", b =>
-                {
-                    b.Property<int>("FollowUpID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FollowUpID"));
-
-                    b.Property<int>("CallType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarePlanID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ScheduledDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("FollowUpID");
-
-                    b.ToTable("FollowUps");
-                });
-
-            modelBuilder.Entity("TeleCare.Model.Patient", b =>
+            modelBuilder.Entity("TeleCare.Model.PatientModel", b =>
                 {
                     b.Property<int>("PatientID")
                         .ValueGeneratedOnAdd()
@@ -154,11 +268,13 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("MRN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PrimaryLanguage")
                         .IsRequired()
@@ -188,11 +304,13 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ProgramName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -200,34 +318,6 @@ namespace TeleCare.Migrations
                     b.HasKey("ProgramID");
 
                     b.ToTable("Programs");
-                });
-
-            modelBuilder.Entity("TeleCare.Models.AdherenceRecord", b =>
-                {
-                    b.Property<int>("AdhID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdhID"));
-
-                    b.Property<int>("MedID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Source")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TakenAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AdhID");
-
-                    b.ToTable("AdherenceRecords");
                 });
 
             modelBuilder.Entity("TeleCare.Models.Medication", b =>
@@ -240,18 +330,21 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("Dose")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("EndAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Frequency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -261,7 +354,8 @@ namespace TeleCare.Migrations
 
                     b.Property<string>("Route")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("datetime2");
@@ -273,6 +367,91 @@ namespace TeleCare.Migrations
 
                     b.ToTable("Medications");
                 });
+
+            modelBuilder.Entity("TeleCare.Model.TelemetryPointModel", b =>
+                {
+                    b.Property<int>("TelemetryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TelemetryID"));
+
+                    b.Property<int>("DeviceID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("IngestedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MetricName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Source")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ValidatedFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("TelemetryID");
+
+                    b.ToTable("TelemetryPoints");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.VisitNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AttachmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Diagnosis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Orders")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientReferenceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VisitNoteStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VisitNotes");
+                });
+
 #pragma warning restore 612, 618
         }
     }
