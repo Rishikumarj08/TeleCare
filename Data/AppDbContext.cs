@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using TeleCare.Model;
+using TeleCare.Models;
 
 namespace TeleCare.Data
 {
@@ -8,5 +10,11 @@ namespace TeleCare.Data
             : base(options)
         {
         }
+
+        public DbSet<ProgramModel> Programs { get; set; }
+        
+        public DbSet<Medication> Medications { get; set; }
+        public DbSet<CarePlan> CarePlans { get; set; }
+        
     }
 }
