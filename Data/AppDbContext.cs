@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TeleCare.Model;
-<<<<<<< HEAD
 using TeleCare.Models;
-=======
- 
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
 
 namespace TeleCare.Data
 {
@@ -89,14 +85,5 @@ namespace TeleCare.Data
         public DbSet<TelemetryPointModel> TelemetryPoints { get; set; }
         public DbSet<AdherenceRecordModel> AdherenceRecords { get; set; }
         public DbSet<DeviceModel> Devices { get; set; }
-        
     }
 }
- 
- 
-
-
-<<<<<<< HEAD
-}
-=======
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2

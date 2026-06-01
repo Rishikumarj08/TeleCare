@@ -5,6 +5,7 @@ namespace TeleCare.Model
 {
     public class Appointment
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Patient reference number is required.")]

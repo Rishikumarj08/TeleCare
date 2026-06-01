@@ -9,13 +9,16 @@ namespace TeleCare.Service.Implementation
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository repository;
+        //private readonly IAuditlogRepository auditlogRepository;
 
-        public AppointmentService(IAppointmentRepository repository)
+        /*public AppointmentService(IAppointmentRepository repository, IAuditlogRepository auditlogRepository)
         {
             this.repository = repository;
+            this.auditlogRepository = auditlogRepository;
         }
+        */
 
-        public async Task<AppointmentDto> createAppointmentRecordAsync(AppointmentDto dto)
+        public async Task<AppointmentDto?> createAppointmentRecordAsync(AppointmentDto dto)
         {
             var entity = new Appointment
             {
@@ -30,7 +33,14 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createAppointmentRecordAsync(entity);
-            dto.AppointmentId = result.Id;
+            if (result != null)
+            {
+                dto.AppointmentId = result.Id;
+            }
+
+            // Call Audit Log service to insert into audit log table
+            // Form th eAudtiLogDto object and pass the necessary details like OperationType (Create), EntityName (Appointment), EntityId (result.Id) etc.
+            // await auditlogRepository.AuditLogCreate(audtiDto);
 
             return dto;
         }
@@ -50,7 +60,7 @@ namespace TeleCare.Service.Implementation
             }).ToList();
         }
 
-        public async Task<AppointmentDto> getAppointmentDetailsByAppointmentIdAsync(int id)
+        public async Task<AppointmentDto?> getAppointmentDetailsByAppointmentIdAsync(int id)
         {
             var entity = await repository.getAppointmentRecordByAppointmentIdAsync(id);
 
@@ -65,7 +75,7 @@ namespace TeleCare.Service.Implementation
             };
         }
 
-        public async Task<AppointmentDto> updateAppointmentDetailsByAppointmentIdAsync(int id, AppointmentDto dto)
+        public async Task<AppointmentDto?> updateAppointmentDetailsByAppointmentIdAsync(int id, AppointmentDto dto)
         {
             var entity = await repository.getAppointmentRecordByAppointmentIdAsync(id);
 
@@ -79,6 +89,7 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var updated = await repository.updateAppointmentRecordByAppointmentIdAsync(entity);
+            if (updated == null) return null;
 
             return new AppointmentDto
             {

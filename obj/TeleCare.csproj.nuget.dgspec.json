@@ -1,30 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {}
+    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {}
   },
   "projects": {
-    "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {
+    "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
+        "projectUniqueName": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
         "projectName": "TeleCare",
-        "projectPath": "c:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
-        "packagesPath": "C:\\Users\\2499058\\.nuget\\packages\\",
-        "outputPath": "c:\\UseCase - SourceCode\\TeleCare\\obj\\",
+        "projectPath": "C:\\UseCase - SourceCode\\TeleCare\\TeleCare.csproj",
+        "packagesPath": "C:\\Users\\2499360\\.nuget\\packages\\",
+        "outputPath": "C:\\UseCase - SourceCode\\TeleCare\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\2499058\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\2499360\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
-            "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {}
           }
@@ -39,11 +44,10 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
@@ -102,7 +106,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

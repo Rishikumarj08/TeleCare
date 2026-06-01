@@ -15,7 +15,7 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<VisitNote> createVisitNoteRecordAsync(VisitNote visitNote)
+        public async Task<VisitNote?> createVisitNoteRecordAsync(VisitNote visitNote)
         {
             await context.VisitNotes.AddAsync(visitNote);
             await context.SaveChangesAsync();
@@ -27,13 +27,13 @@ namespace TeleCare.Repository.Implementation
             return await context.VisitNotes.ToListAsync();
         }
 
-        public async Task<VisitNote> getVisitNoteRecordByVisitNoteIdAsync(int visitNoteId)
+        public async Task<VisitNote?> getVisitNoteRecordByVisitNoteIdAsync(int visitNoteId)
         {
             return await context.VisitNotes
                 .FirstOrDefaultAsync(x => x.Id == visitNoteId);
         }
 
-        public async Task<VisitNote> updateVisitNoteRecordByVisitNoteIdAsync(VisitNote visitNote)
+        public async Task<VisitNote?> updateVisitNoteRecordByVisitNoteIdAsync(VisitNote visitNote)
         {
             context.VisitNotes.Update(visitNote);
             await context.SaveChangesAsync();

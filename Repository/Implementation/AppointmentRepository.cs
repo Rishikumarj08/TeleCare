@@ -15,7 +15,7 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<Appointment> createAppointmentRecordAsync(Appointment appointment)
+        public async Task<Appointment?> createAppointmentRecordAsync(Appointment appointment)
         {
             await context.Appointments.AddAsync(appointment);
             await context.SaveChangesAsync();
@@ -27,13 +27,13 @@ namespace TeleCare.Repository.Implementation
             return await context.Appointments.ToListAsync();
         }
 
-        public async Task<Appointment> getAppointmentRecordByAppointmentIdAsync(int appointmentId)
+        public async Task<Appointment?> getAppointmentRecordByAppointmentIdAsync(int appointmentId)
         {
             return await context.Appointments
                 .FirstOrDefaultAsync(x => x.Id == appointmentId);
         }
 
-        public async Task<Appointment> updateAppointmentRecordByAppointmentIdAsync(Appointment appointment)
+        public async Task<Appointment?> updateAppointmentRecordByAppointmentIdAsync(Appointment appointment)
         {
             context.Appointments.Update(appointment);
             await context.SaveChangesAsync();

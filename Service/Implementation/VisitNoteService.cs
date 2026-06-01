@@ -15,7 +15,7 @@ namespace TeleCare.Service.Implementation
             this.repository = repository;
         }
 
-        public async Task<VisitNoteDto> createVisitNoteRecordAsync(VisitNoteDto dto)
+        public async Task<VisitNoteDto?> createVisitNoteRecordAsync(VisitNoteDto dto)
         {
             var entity = new VisitNote
             {
@@ -32,7 +32,10 @@ namespace TeleCare.Service.Implementation
 
             var result = await repository.createVisitNoteRecordAsync(entity);
 
-            dto.VisitNoteId = result.Id;
+            if (result != null)
+            {
+                dto.VisitNoteId = result.Id;
+            }
             return dto;
         }
 
@@ -52,7 +55,7 @@ namespace TeleCare.Service.Implementation
             }).ToList();
         }
 
-        public async Task<VisitNoteDto> getVisitNoteDetailsByVisitNoteIdAsync(int id)
+        public async Task<VisitNoteDto?> getVisitNoteDetailsByVisitNoteIdAsync(int id)
         {
             var entity = await repository.getVisitNoteRecordByVisitNoteIdAsync(id);
 
@@ -68,13 +71,16 @@ namespace TeleCare.Service.Implementation
             };
         }
 
-        public async Task<VisitNoteDto> updateVisitNoteDetailsByVisitNoteIdAsync(int id, VisitNoteDto dto)
+        public async Task<VisitNoteDto?> updateVisitNoteDetailsByVisitNoteIdAsync(int id, VisitNoteDto dto)
         {
             var entity = await repository.getVisitNoteRecordByVisitNoteIdAsync(id);
 
-            entity = entity == null ? null : ApplyUpdate(entity, dto);
+            if (entity == null) return null;
 
-            return entity == null ? null : Map(await repository.updateVisitNoteRecordByVisitNoteIdAsync(entity));
+            entity = ApplyUpdate(entity, dto);
+
+            var updated = await repository.updateVisitNoteRecordByVisitNoteIdAsync(entity);
+            return updated == null ? null : Map(updated);
         }
 
         public async Task<List<VisitNoteDto>> getFilteredVisitNoteRecordsAsync(VisitNoteQueryDto query)

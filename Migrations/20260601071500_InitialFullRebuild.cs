@@ -68,6 +68,25 @@ namespace TeleCare.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarePlans",
+                columns: table => new
+                {
+                    CarePlanID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    ProgramID = table.Column<int>(type: "int", nullable: false),
+                    PlanName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarePlans", x => x.CarePlanID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Devices",
                 columns: table => new
                 {
@@ -101,6 +120,27 @@ namespace TeleCare.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.EnrollID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medications",
+                columns: table => new
+                {
+                    MedicationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Dose = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Frequency = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Route = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PrescribedBy = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medications", x => x.MedicationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,6 +181,22 @@ namespace TeleCare.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Payers", x => x.PayerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Programs",
+                columns: table => new
+                {
+                    ProgramID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProgramName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Programs", x => x.ProgramID);
                 });
 
             migrationBuilder.CreateTable(
@@ -250,7 +306,7 @@ namespace TeleCare.Migrations
                     ChargeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientID = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -274,8 +330,8 @@ namespace TeleCare.Migrations
                     PatientID = table.Column<int>(type: "int", nullable: false),
                     PayerID = table.Column<int>(type: "int", nullable: false),
                     SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AmountBilled = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AmountBilled = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -325,7 +381,7 @@ namespace TeleCare.Migrations
                     PaymentID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClaimID = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -398,6 +454,9 @@ namespace TeleCare.Migrations
                 name: "Appointments");
 
             migrationBuilder.DropTable(
+                name: "CarePlans");
+
+            migrationBuilder.DropTable(
                 name: "Charges");
 
             migrationBuilder.DropTable(
@@ -407,6 +466,9 @@ namespace TeleCare.Migrations
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
+                name: "Medications");
+
+            migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
@@ -414,6 +476,9 @@ namespace TeleCare.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "Programs");
 
             migrationBuilder.DropTable(
                 name: "Rules");

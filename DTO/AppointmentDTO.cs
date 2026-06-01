@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using TeleCare.Enum;
 
 namespace TeleCare.DTO

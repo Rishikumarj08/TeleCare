@@ -15,7 +15,7 @@ namespace TeleCare.Service.Implementation
             this.repository = repository;
         }
 
-        public async Task<AlertDto> createAlertRecordAsync(AlertDto dto)
+        public async Task<AlertDto?> createAlertRecordAsync(AlertDto dto)
         {
             var entity = new Alert
             {
@@ -30,7 +30,10 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createAlertRecordAsync(entity);
-            dto.AlertId = result.Id;
+            if (result != null)
+            {
+                dto.AlertId = result.Id;
+            }
 
             return dto;
         }
@@ -50,7 +53,7 @@ namespace TeleCare.Service.Implementation
             }).ToList();
         }
 
-        public async Task<AlertDto> getAlertDetailsByAlertIdAsync(int id)
+        public async Task<AlertDto?> getAlertDetailsByAlertIdAsync(int id)
         {
             var entity = await repository.getAlertRecordByAlertIdAsync(id);
 
@@ -65,7 +68,7 @@ namespace TeleCare.Service.Implementation
             };
         }
 
-        public async Task<AlertDto> updateAlertDetailsByAlertIdAsync(int id, AlertDto dto)
+        public async Task<AlertDto?> updateAlertDetailsByAlertIdAsync(int id, AlertDto dto)
         {
             var entity = await repository.getAlertRecordByAlertIdAsync(id);
 
@@ -79,6 +82,7 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var updated = await repository.updateAlertRecordByAlertIdAsync(entity);
+            if (updated == null) return null;
 
             return new AlertDto
             {

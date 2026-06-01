@@ -14,7 +14,7 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<Alert> createAlertRecordAsync(Alert alert)
+        public async Task<Alert?> createAlertRecordAsync(Alert alert)
         {
             await context.Alerts.AddAsync(alert);
             await context.SaveChangesAsync();
@@ -26,13 +26,13 @@ namespace TeleCare.Repository.Implementation
             return await context.Alerts.ToListAsync();
         }
 
-        public async Task<Alert> getAlertRecordByAlertIdAsync(int alertId)
+        public async Task<Alert?> getAlertRecordByAlertIdAsync(int alertId)
         {
             return await context.Alerts
                 .FirstOrDefaultAsync(x => x.Id == alertId);
         }
 
-        public async Task<Alert> updateAlertRecordByAlertIdAsync(Alert alert)
+        public async Task<Alert?> updateAlertRecordByAlertIdAsync(Alert alert)
         {
             context.Alerts.Update(alert);
             await context.SaveChangesAsync();

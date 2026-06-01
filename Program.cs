@@ -5,19 +5,10 @@ using TeleCare.Repository.Implementation;
 using TeleCare.Repository.Interface;
 using TeleCare.Service.Implementation;
 using TeleCare.Service.Interface;
-<<<<<<< HEAD
 using TeleCare.Filters;
-
-var builder = WebApplication.CreateBuilder(args);
-
-//  Database Configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-=======
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TeleCare.Exceptions;
 using Microsoft.OpenApi;
 using System.Collections.Generic;
 
@@ -34,8 +25,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ✅ Database
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
+// ✅ Database Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -85,11 +75,7 @@ builder.Services.AddScoped<IChargeService, ChargeService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 
-<<<<<<< HEAD
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
-// Controllers & Swagger
+// ✅ Controllers
 builder.Services.AddControllers(options =>
 {
     // Register global model validation filter to return structured errors
@@ -97,8 +83,6 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 
 // Program Module
 builder.Services.AddScoped<IProgramRepository, ProgramRepository>();
@@ -108,15 +92,9 @@ builder.Services.AddScoped<IProgramService, ProgramService>();
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IMedicationService, MedicationService>();
 
-// // CarePlan Module
+// CarePlan Module
 builder.Services.AddScoped<ICarePlanRepository, CarePlanRepository>();
 builder.Services.AddScoped<ICarePlanService, CarePlanService>();
-
-
-=======
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
 
 // ✅ Swagger + JWT (FIXED)
 builder.Services.AddSwaggerGen(options =>
@@ -162,16 +140,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-<<<<<<< HEAD
-// Global Exception Middleware
-app.UseMiddleware<GlobalExceptionMiddleware>();
-
-//  Swagger (Development Only)
-=======
 // ✅ Global Exception Middleware
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
+// ✅ Swagger (Development Only)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -180,11 +152,8 @@ if (app.Environment.IsDevelopment())
 
 // Middleware Pipeline
 app.UseHttpsRedirection();
-<<<<<<< HEAD
-=======
 app.UseCors("AllowAll");
 app.UseAuthentication();
->>>>>>> 1c322d2759f0ac9764e2db63dbdaa7c2553105a2
 app.UseAuthorization();
 
 app.MapControllers();

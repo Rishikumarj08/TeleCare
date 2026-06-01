@@ -160,3 +160,4 @@ C:\UseCase - SourceCode\TeleCare\obj\Debug\net10.0\refint\TeleCare.dll
 C:\UseCase - SourceCode\TeleCare\obj\Debug\net10.0\TeleCare.pdb
 C:\UseCase - SourceCode\TeleCare\obj\Debug\net10.0\TeleCare.genruntimeconfig.cache
 C:\UseCase - SourceCode\TeleCare\obj\Debug\net10.0\ref\TeleCare.dll
+C:\UseCase - SourceCode\TeleCare\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
