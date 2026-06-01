@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TeleCare")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7031e5561e97cc4e5e47534796c2e8ccae0f3f6f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4af47cb98306d156e91524e0714faeab6903f67")]
 [assembly: System.Reflection.AssemblyProductAttribute("TeleCare")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TeleCare")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
