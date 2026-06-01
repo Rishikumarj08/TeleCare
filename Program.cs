@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ✅ Database Configuration
+//  Database Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -78,8 +79,12 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 // ✅ Controllers
 builder.Services.AddControllers(options =>
 {
-    // Register global model validation filter to return structured errors
     options.Filters.Add<ValidateModelAttribute>();
+})
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters
+        .Add(new JsonStringEnumConverter());
 });
 
 builder.Services.AddEndpointsApiExplorer();
