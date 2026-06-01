@@ -8,11 +8,11 @@ namespace TeleCare.DTO
 
         public int PatientReferenceNumber { get; set; }
 
-        public string AlertType { get; set; }
+        public required string AlertType { get; set; }
 
         public AlertSeverityEnum AlertSeverity { get; set; }
 
-        public string Message { get; set; }
+        public required string Message { get; set; }
 
         public AlertStatusEnum AlertStatus { get; set; }
     }

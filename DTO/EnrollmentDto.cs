@@ -10,7 +10,7 @@ namespace TeleCare.DTO
         public int ProgramID { get; set; }
         public int EnrolledBy { get; set; }
         public DateTime EnrolledAt { get; set; }
-        public string ConsentDocumentURI { get; set; }
+        public required string ConsentDocumentURI { get; set; }
         public EnrollmentStatus Status { get; set; }
     }
 
@@ -19,13 +19,13 @@ namespace TeleCare.DTO
         public int PatientID { get; set; }
         public int ProgramID { get; set; }
         public int EnrolledBy { get; set; }
-        public string ConsentDocumentURI { get; set; }
+        public required string ConsentDocumentURI { get; set; }
     }
 
     public class EnrollmentUpdateDto
     {
         public int EnrollID { get; set; }
-        public string ConsentDocumentURI { get; set; }
+        public required string ConsentDocumentURI { get; set; }
         public EnrollmentStatus Status { get; set; }
     }
 

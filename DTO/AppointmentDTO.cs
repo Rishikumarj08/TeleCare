@@ -10,9 +10,9 @@ namespace TeleCare.DTO
 
         public DateTime AppointmentDateTime { get; set; }
 
-        public string AppointmentType { get; set; }
+        public required string AppointmentType { get; set; }
 
-        public string AppointmentMode { get; set; }
+        public required string AppointmentMode { get; set; }
 
         public AppointmentStatusEnum AppointmentStatus { get; set; }
     }
