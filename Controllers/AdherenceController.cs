@@ -28,7 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{adherenceId}")]
-        [Authorize(Roles = "Patient,CareCoordinator")]
+        [Authorize(Roles = "Patient,Care Coordinator")]
         public async Task<IActionResult> getAdherenceDetailsByAdhID(int adherenceId)
         {
             if (adherenceId <= 0) return BadRequest(AdherenceConstants.InvalidAdherenceId);
@@ -53,7 +53,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
-        [Authorize(Roles = "Patient,CareCoordinator")]
+        [Authorize(Roles = "Patient,Care Coordinator")]
         public async Task<IActionResult> getFilteredAdherenceRecords([FromQuery] AdherenceQueryDto adherenceQueryDtodto)
         {
             return Ok(await adherenceService.getFilteredAdherenceRecordsAsync(adherenceQueryDtodto));
