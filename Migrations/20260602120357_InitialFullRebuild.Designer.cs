@@ -12,8 +12,8 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601130454_UpdatedFiles")]
-    partial class UpdatedFiles
+    [Migration("20260602120357_InitialFullRebuild")]
+    partial class InitialFullRebuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,6 +123,41 @@ namespace TeleCare.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.AuditLog", b =>
+                {
+                    b.Property<int>("AuditID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditID"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DetailsJSON")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResourceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResourceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("TeleCare.Model.CarePlan", b =>
@@ -294,6 +329,33 @@ namespace TeleCare.Migrations
                     b.HasKey("EnrollID");
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.KPI", b =>
+                {
+                    b.Property<int>("KPIID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KPIID"));
+
+                    b.Property<string>("Definition")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportingPeriod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TargetValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("KPIID");
+
+                    b.ToTable("KPIs");
                 });
 
             modelBuilder.Entity("TeleCare.Model.Notification", b =>
@@ -736,6 +798,17 @@ namespace TeleCare.Migrations
                     b.HasKey("MedicationId");
 
                     b.ToTable("Medications");
+                });
+
+            modelBuilder.Entity("TeleCare.Model.AuditLog", b =>
+                {
+                    b.HasOne("TeleCare.Model.User", "PerformedBy")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PerformedBy");
                 });
 
             modelBuilder.Entity("TeleCare.Model.Charge", b =>
