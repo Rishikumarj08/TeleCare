@@ -8,13 +8,14 @@ namespace TeleCare.Service.Implementation
     public class MedicationService : IMedicationService
     {
         private readonly IMedicationRepository _repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public MedicationService(IMedicationRepository repository)
+        public MedicationService(IMedicationRepository repository, IAuditLogService auditLogService)
         {
             _repository = repository;
+            _auditLogService = auditLogService;
         }
 
-        //  CREATE
         public async Task<MedicationResponseDto?> CreateMedicationAsync(int patientId, MedicationRequestDto dto)
         {
             if (dto == null || patientId <= 0)
@@ -36,11 +37,12 @@ namespace TeleCare.Service.Implementation
             };
 
             var result = await _repository.CreateMedicationAsync(entity);
+            await _auditLogService.LogAsync(patientId, "CREATE", "Medication", result.MedicationId,
+                $"Medication '{result.Name}' created for patient '{patientId}'.");
 
             return Map(result);
         }
 
-        //  GET BY ID
         public async Task<MedicationResponseDto?> GetMedicationByIdAsync(int id)
         {
             if (id <= 0) return null;
@@ -52,7 +54,6 @@ namespace TeleCare.Service.Implementation
             return Map(entity);
         }
 
-        //  UPDATE
         public async Task<MedicationResponseDto?> UpdateMedicationAsync(int id, MedicationRequestDto dto)
         {
             if (dto == null || id <= 0)
@@ -76,10 +77,12 @@ namespace TeleCare.Service.Implementation
 
             if (updated == null) return null;
 
+            await _auditLogService.LogAsync(0, "UPDATE", "Medication", id,
+                $"Medication '{id}' updated.");
+
             return Map(updated);
         }
 
-        //  GET ALL
         public async Task<IEnumerable<MedicationResponseDto>> GetAllMedicationsAsync(MedicationSearchDto searchDto)
         {
             var list = await _repository.GetAllMedicationsAsync(searchDto);
@@ -87,7 +90,6 @@ namespace TeleCare.Service.Implementation
             return list.Select(Map);
         }
 
-        //  MAP
         private static MedicationResponseDto Map(Medication m)
         {
             return new MedicationResponseDto

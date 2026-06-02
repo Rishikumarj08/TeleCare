@@ -12,10 +12,12 @@ using TeleCare.Service.Interface;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IAuditLogService _auditLogService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IAuditLogService auditLogService)
     {
         _userRepository = userRepository;
+        _auditLogService = auditLogService;
     }
 
     public async Task<List<UserResponseDto>> GetAllUsersAsync()
@@ -69,6 +71,8 @@ public class UserService : IUserService
         };
 
         await _userRepository.AddUserAsync(user);
+        await _auditLogService.LogAsync(user.UserID, "CREATE", "User", user.UserID,
+            $"User '{user.Name}' created with role '{userDto.RoleName}'.");
     }
 
     public async Task UpdateUserAsync(int userId, UserCreateDto userDto)
@@ -95,6 +99,8 @@ public class UserService : IUserService
         user.UpdatedAt = DateTime.UtcNow;
 
         await _userRepository.UpdateUserAsync(user);
+        await _auditLogService.LogAsync(userId, "UPDATE", "User", userId,
+            $"User '{user.Name}' updated. Role: '{userDto.RoleName}'.");
     }
 
     private UserResponseDto Map(User user)

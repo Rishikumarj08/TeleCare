@@ -9,10 +9,12 @@ namespace TeleCare.Service.Implementation
     public class AlertService : IAlertService
     {
         private readonly IAlertRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public AlertService(IAlertRepository repository)
+        public AlertService(IAlertRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<AlertDto?> createAlertRecordAsync(AlertDto dto)
@@ -34,6 +36,9 @@ namespace TeleCare.Service.Implementation
             {
                 dto.AlertId = result.Id;
             }
+
+            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "Alert", result?.Id,
+                $"Alert '{dto.AlertType}' created for patient '{dto.PatientReferenceNumber}'. Severity: '{dto.AlertSeverity}'.");
 
             return dto;
         }
@@ -83,6 +88,9 @@ namespace TeleCare.Service.Implementation
 
             var updated = await repository.updateAlertRecordByAlertIdAsync(entity);
             if (updated == null) return null;
+
+            await _auditLogService.LogAsync(updated.PatientReferenceNumber, "UPDATE", "Alert", id,
+                $"Alert '{id}' updated. Status: '{dto.AlertStatus}'.");
 
             return new AlertDto
             {

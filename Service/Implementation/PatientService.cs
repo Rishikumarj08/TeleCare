@@ -10,10 +10,12 @@ namespace TeleCare.Service.Implementation
     public class PatientService : IPatientService
     {
         private readonly IPatientRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public PatientService(IPatientRepository repository)
+        public PatientService(IPatientRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<PatientResponseDto> createPatientRecordAsync(PatientCreateDto patientCreateDto)
@@ -38,6 +40,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createPatientRecordAsync(entity);
+            await _auditLogService.LogAsync(entity.UserID, "CREATE", "Patient", result.PatientID,
+                $"Patient '{result.Name}' created with MRN '{result.MRN}'.");
             return MapToDto(result);
         }
 
@@ -60,6 +64,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var updated = await repository.updatePatientRecordByPatientIdAsync(entity);
+            await _auditLogService.LogAsync(entity.UserID, "UPDATE", "Patient", patientId,
+                $"Patient '{entity.Name}' updated.");
             return MapToDto(updated);
         }
 

@@ -10,10 +10,12 @@ namespace TeleCare.Service.Implementation
     public class EnrollmentService : IEnrollmentService
     {
         private readonly IEnrollmentRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public EnrollmentService(IEnrollmentRepository repository)
+        public EnrollmentService(IEnrollmentRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<EnrollmentResponseDto> createEnrollmentRecordAsync(EnrollmentCreateDto enrollmentCreateDto)
@@ -31,6 +33,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createEnrollmentRecordAsync(entity);
+            await _auditLogService.LogAsync(entity.EnrolledBy, "CREATE", "Enrollment", result.EnrollID,
+                $"Patient '{result.PatientID}' enrolled in program '{result.ProgramID}'.");
             return MapToDto(result);
         }
 
@@ -51,6 +55,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var updated = await repository.updateEnrollmentRecordByEnrollIDAsync(entity);
+            await _auditLogService.LogAsync(entity.EnrolledBy, "UPDATE", "Enrollment", enrollId,
+                $"Enrollment '{enrollId}' updated. Status: '{dto.Status}'.");
             return MapToDto(updated);
         }
 

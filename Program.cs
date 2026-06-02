@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-//  Database Configuration
+// ✅ Database Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -75,6 +75,17 @@ builder.Services.AddScoped<IChargeService, ChargeService>();
 
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+// ✅ Dependency Injection — Audit Logs
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+// ✅ Dependency Injection — KPI
+builder.Services.AddScoped<IKpiRepository, KpiRepository>();
+builder.Services.AddScoped<IKpiService, KpiService>();
+
+// ✅ Dependency Injection — Auditor Patient Visits
+builder.Services.AddScoped<IAuditorVisitNoteService, AuditorVisitNoteService>();
+
+
 
 // ✅ Controllers
 builder.Services.AddControllers(options =>
@@ -106,7 +117,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Enter your JWT token",
+        Description = "Paste only the JWT token (without 'Bearer ' prefix).",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
@@ -114,7 +125,10 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT"
     });
 
-    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement());
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        { new OpenApiSecuritySchemeReference("Bearer", document, null), new List<string>() }
+    });
 });
 
 // ✅ Authentication
@@ -151,8 +165,13 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 // ✅ Swagger (Development Only)
 if (app.Environment.IsDevelopment())
 {
+    app.UseStaticFiles();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        // Inject our small helper to set a token and attach it to requests.
+        options.InjectJavascript("/swagger-ui/swagger-custom.js");
+    });
 }
 
 // Middleware Pipeline

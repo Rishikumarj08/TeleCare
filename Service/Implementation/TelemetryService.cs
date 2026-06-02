@@ -9,10 +9,12 @@ namespace TeleCare.Service.Implementation
     public class TelemetryService : ITelemetryService
     {
         private readonly ITelemetryRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public TelemetryService(ITelemetryRepository repository)
+        public TelemetryService(ITelemetryRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<TelemetryResponseDto> createTelemetryRecordAsync(TelemetryCreateDto telemetryCreateDto)
@@ -34,6 +36,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createTelemetryRecordAsync(entity);
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "Telemetry", result.TelemetryID,
+                $"Telemetry '{result.MetricName}' with value '{result.Value} {result.Unit}' recorded for patient '{result.PatientID}'.");
             return MapToDto(result);
         }
 

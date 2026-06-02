@@ -15,6 +15,7 @@ namespace TeleCare.Constants
         public const string PasswordResetTokenInvalid = "Password reset token is invalid or expired.";
         public const string EmailAlreadyRegistered = "An account already exists with this email.";
         public const string RegistrationRestricted = "Registration is permitted only for patient or administrator roles.";
+
  
         // Rule
         public const string NoRulesFound = "No rules found.";
@@ -29,6 +30,7 @@ namespace TeleCare.Constants
         public const string NoClaimsFound = "No claims found.";
         public const string ClaimNotFound = "Claim not found.";
         public const string PatientNotFound = "Patient not found.";
+
  
         // Payment
         public const string NoPaymentsFound = "No payments found.";
@@ -44,8 +46,18 @@ namespace TeleCare.Constants
         public const string NotificationNotFound = "Notification not found.";
         public const string RecipientUserNotFound = "The recipient user does not exist.";
 
+        // Audit Log
+        public const string NoAuditLogsFound = "No audit logs found.";
+        public const string AuditLogNotFound = "Audit log not found.";
 
+        // Patient Visits
+        public const string NoVisitNotesFound = "No patient visits found.";
+
+        // KPI
+        public const string NoKpisFound = "No KPIs found.";
+        public const string KpiNotFound = "KPI not found.";
+        public const string KpiNameRequired = "KPI name is required.";
+        public const string KpiReportingPeriodRequired = "Reporting period is required.";
+        public const string KpiTargetValueInvalid = "Target value must be between 0 and 100.";
     }
 }
- 
- 

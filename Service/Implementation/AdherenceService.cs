@@ -9,10 +9,12 @@ namespace TeleCare.Service.Implementation
     public class AdherenceService : IAdherenceService
     {
         private readonly IAdherenceRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public AdherenceService(IAdherenceRepository repository)
+        public AdherenceService(IAdherenceRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<AdherenceResponseDto> createAdherenceRecordAsync(AdherenceCreateDto adherenceCreateDto)
@@ -30,6 +32,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var result = await repository.createAdherenceRecordAsync(entity);
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "AdherenceRecord", result.AdhID,
+                $"Adherence record created for patient '{result.PatientID}' for medication '{result.MedID}'.");
             return MapToDto(result);
         }
 
@@ -51,6 +55,8 @@ namespace TeleCare.Service.Implementation
             Validate(entity);
 
             var updated = await repository.updateAdherenceRecordByAdhIDAsync(entity);
+            await _auditLogService.LogAsync(entity.PatientID, "UPDATE", "AdherenceRecord", adhId,
+                $"Adherence record '{adhId}' updated. Status: '{adherenceUpdateDto.Status}'.");
             return MapToDto(updated);
         }
 

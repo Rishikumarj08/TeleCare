@@ -16,6 +16,8 @@ namespace TeleCare.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Charge> Charges { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<KPI> KPIs { get; set; }
  
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,6 +65,13 @@ namespace TeleCare.Data
                 .HasForeignKey(ch => ch.PatientID)
                 .OnDelete(DeleteBehavior.Restrict);
  
+            // AuditLog → User
+            modelBuilder.Entity<AuditLog>()
+                .HasOne(a => a.PerformedBy)
+                .WithMany()
+                .HasForeignKey(a => a.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Notification → User
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)

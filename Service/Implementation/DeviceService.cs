@@ -9,8 +9,13 @@ namespace TeleCare.Service.Implementation
     public class DeviceService : IDeviceService
     {
         private readonly IDeviceRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public DeviceService(IDeviceRepository repository) => this.repository = repository;
+        public DeviceService(IDeviceRepository repository, IAuditLogService auditLogService)
+        {
+            this.repository = repository;
+            _auditLogService = auditLogService;
+        }
 
         public async Task<DeviceResponseDto> createDeviceRecordAsync(DeviceCreateDto deviceCreateDto)
         {
@@ -26,6 +31,8 @@ namespace TeleCare.Service.Implementation
 
             Validate(entity);
             var result = await repository.createDeviceRecordAsync(entity);
+            await _auditLogService.LogAsync(0, "CREATE", "Device", result.DeviceID,
+                $"Device '{result.SerialNumber}' of type '{result.DeviceType}' created.");
             return MapToDto(result);
         }
 
@@ -46,13 +53,20 @@ namespace TeleCare.Service.Implementation
 
             Validate(entity);
             var updated = await repository.updateDeviceRecordByDeviceIdAsync(entity);
+            await _auditLogService.LogAsync(0, "UPDATE", "Device", deviceId,
+                $"Device '{deviceId}' updated. Status: '{deviceUpdateDto.Status}'.");
             return MapToDto(updated);
         }
 
         public async Task deleteDeviceRecordAsync(int deviceId)
         {
             var entity = await repository.getDeviceRecordByDeviceIdAsync(deviceId);
-            if (entity != null) await repository.deleteDeviceRecordAsync(entity);
+            if (entity != null)
+            {
+                await repository.deleteDeviceRecordAsync(entity);
+                await _auditLogService.LogAsync(0, "DELETE", "Device", deviceId,
+                    $"Device '{entity.SerialNumber}' deleted.");
+            }
         }
 
         public async Task<List<DeviceResponseDto>> getFilteredDeviceRecordsAsync(DeviceQueryDto deviceQueryDto)

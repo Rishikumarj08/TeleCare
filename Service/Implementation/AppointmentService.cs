@@ -9,14 +9,13 @@ namespace TeleCare.Service.Implementation
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository repository;
-        //private readonly IAuditlogRepository auditlogRepository;
+        private readonly IAuditLogService _auditLogService;
 
-        /*public AppointmentService(IAppointmentRepository repository, IAuditlogRepository auditlogRepository)
+        public AppointmentService(IAppointmentRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
-            this.auditlogRepository = auditlogRepository;
+            _auditLogService = auditLogService;
         }
-        */
 
         public async Task<AppointmentDto?> createAppointmentRecordAsync(AppointmentDto dto)
         {
@@ -38,9 +37,8 @@ namespace TeleCare.Service.Implementation
                 dto.AppointmentId = result.Id;
             }
 
-            // Call Audit Log service to insert into audit log table
-            // Form th eAudtiLogDto object and pass the necessary details like OperationType (Create), EntityName (Appointment), EntityId (result.Id) etc.
-            // await auditlogRepository.AuditLogCreate(audtiDto);
+            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "Appointment", result?.Id,
+                $"Appointment created for patient '{dto.PatientReferenceNumber}' on '{dto.AppointmentDateTime:yyyy-MM-dd}'.");
 
             return dto;
         }
@@ -90,6 +88,9 @@ namespace TeleCare.Service.Implementation
 
             var updated = await repository.updateAppointmentRecordByAppointmentIdAsync(entity);
             if (updated == null) return null;
+
+            await _auditLogService.LogAsync(updated.PatientReferenceNumber, "UPDATE", "Appointment", id,
+                $"Appointment '{id}' updated. Status: '{dto.AppointmentStatus}'.");
 
             return new AppointmentDto
             {

@@ -9,10 +9,12 @@ namespace TeleCare.Service.Implementation
     public class VisitNoteService : IVisitNoteService
     {
         private readonly IVisitNoteRepository repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public VisitNoteService(IVisitNoteRepository repository)
+        public VisitNoteService(IVisitNoteRepository repository, IAuditLogService auditLogService)
         {
             this.repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<VisitNoteDto?> createVisitNoteRecordAsync(VisitNoteDto dto)
@@ -36,6 +38,10 @@ namespace TeleCare.Service.Implementation
             {
                 dto.VisitNoteId = result.Id;
             }
+
+            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "VisitNote", result?.Id,
+                $"Visit note created for patient '{dto.PatientReferenceNumber}'.");
+
             return dto;
         }
 
@@ -80,6 +86,10 @@ namespace TeleCare.Service.Implementation
             entity = ApplyUpdate(entity, dto);
 
             var updated = await repository.updateVisitNoteRecordByVisitNoteIdAsync(entity);
+
+            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "UPDATE", "VisitNote", id,
+                $"Visit note '{id}' updated for patient '{entity.PatientReferenceNumber}'.");
+
             return updated == null ? null : Map(updated);
         }
 

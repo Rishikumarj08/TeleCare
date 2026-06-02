@@ -67,6 +67,40 @@ namespace TeleCare.Enum
         System,
         Billing
     }
+
+    public enum AuditAction
+    {
+        CREATE,
+        UPDATE,
+        DELETE,
+        VIEW
+    }
+
+    public enum AuditResourceType
+    {
+        User,
+        Rule,
+        Claim,
+        Payment,
+        Charge,
+        Notification,
+        Patient,
+        Enrollment,
+        Device,
+        Telemetry,
+        Appointment,
+        VisitNote,
+        Alert,
+        CarePlan,
+        Medication,
+        AdherenceRecord,
+        Program
+    }
+
+    public enum KpiPerformanceIndicator
+    {
+        Exceeded,
+        OnTrack,
+        BelowTarget
+    }
 }
- 
- 

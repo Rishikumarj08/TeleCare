@@ -9,10 +9,12 @@ namespace TeleCare.Service.Implementation
     public class CarePlanService : ICarePlanService
     {
         private readonly ICarePlanRepository _repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public CarePlanService(ICarePlanRepository repository)
+        public CarePlanService(ICarePlanRepository repository, IAuditLogService auditLogService)
         {
             _repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<List<CarePlanResponseDTO>> GetAllCarePlansAsync(CarePlanSearchDTO searchDTO)
@@ -63,6 +65,8 @@ namespace TeleCare.Service.Implementation
             };
 
             await _repository.AddCarePlanAsync(entity);
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "CarePlan", entity.CarePlanID,
+                $"Care plan '{entity.PlanName}' created for patient '{entity.PatientID}'.");
 
             return new CarePlanResponseDTO
             {
@@ -89,6 +93,8 @@ namespace TeleCare.Service.Implementation
             entity.Status = dto.Status;
 
             await _repository.UpdateCarePlanAsync(entity);
+            await _auditLogService.LogAsync(entity.PatientID, "UPDATE", "CarePlan", id,
+                $"Care plan '{entity.PlanName}' updated. Status: '{dto.Status}'.");
 
             return new CarePlanResponseDTO
             {

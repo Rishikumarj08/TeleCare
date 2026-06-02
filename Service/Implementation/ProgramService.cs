@@ -8,10 +8,12 @@ namespace TeleCare.Service.Implementation
     public class ProgramService : IProgramService
     {
         private readonly IProgramRepository _repository;
+        private readonly IAuditLogService _auditLogService;
 
-        public ProgramService(IProgramRepository repository)
+        public ProgramService(IProgramRepository repository, IAuditLogService auditLogService)
         {
             _repository = repository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<List<ProgramResponseDTO>> GetAllProgramsAsync(ProgramSearchDTO searchDTO)
@@ -56,6 +58,8 @@ namespace TeleCare.Service.Implementation
             };
 
             await _repository.AddProgramAsync(entity);
+            await _auditLogService.LogAsync(0, "CREATE", "Program", entity.ProgramID,
+                $"Program '{entity.ProgramName}' created.");
 
             return new ProgramResponseDTO
             {
@@ -82,6 +86,8 @@ namespace TeleCare.Service.Implementation
             entity.Status = dto.Status;
 
             await _repository.UpdateProgramAsync(entity);
+            await _auditLogService.LogAsync(0, "UPDATE", "Program", entity.ProgramID,
+                $"Program '{entity.ProgramName}' updated. Status: '{dto.Status}'.");
 
             return new ProgramResponseDTO
             {
