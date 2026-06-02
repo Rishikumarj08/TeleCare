@@ -1,0 +1,14 @@
+# Ignore build outputs
+/bin/
+/obj/
+**/bin/
+**/obj/
+
+# VS and user files
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+*.sln.iml
