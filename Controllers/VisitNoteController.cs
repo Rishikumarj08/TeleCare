@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> createVisitNoteRecord([FromBody] VisitNoteDto dto)
         {
             if (dto == null)
@@ -31,6 +33,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> getAllVisitNoteRecords()
         {
             var result = await visitNoteService.getAllVisitNoteRecordsAsync();
@@ -38,6 +41,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{visitNoteId}")]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> getVisitNoteDetailsByVisitNoteId(int visitNoteId)
         {
             if (visitNoteId <= 0)
@@ -60,6 +64,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{visitNoteId}")]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> updateVisitNoteDetailsByVisitNoteId(int visitNoteId, [FromBody] VisitNoteDto dto)
         {
             if (visitNoteId <= 0)
@@ -86,6 +91,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> getFilteredVisitNoteRecords([FromQuery] VisitNoteQueryDto query)
         {
             var result = await visitNoteService.getFilteredVisitNoteRecordsAsync(query);

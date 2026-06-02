@@ -6,7 +6,6 @@ namespace TeleCare.Service.Implementation
     using TeleCare.Model;
     using TeleCare.Repository.Interface;
     using TeleCare.Service.Interface;
-
     public class ChargeService : IChargeService
     {
         private readonly IChargeRepository _chargeRepository;
@@ -26,7 +25,6 @@ namespace TeleCare.Service.Implementation
             var charges = await _chargeRepository.GetAllChargesAsync();
             return charges.Select(Map).ToList();
         }
-
         public async Task<ChargeResponseDto> GetChargeByIdAsync(int chargeId)
         {
             var charge = await _chargeRepository.GetChargeByIdAsync(chargeId);
@@ -34,7 +32,6 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.ChargeNotFound);
             return Map(charge);
         }
-
         public async Task<List<ChargeResponseDto>> SearchChargesAsync(SearchChargeDto searchDto)
         {
             var charges = await _chargeRepository.SearchChargesAsync(searchDto);
@@ -42,13 +39,11 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.NoChargesFound);
             return charges.Select(Map).ToList();
         }
-
         public async Task CreateChargeAsync(ChargeCreateDto chargeDto)
         {
             var patient = await _userRepository.GetUserByIdAsync(chargeDto.PatientID);
             if (patient == null)
                 throw new NotFoundException(AppConstants.PatientNotFound);
-
             var charge = new Charge
             {
                 PatientID = chargeDto.PatientID,

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> createAppointmentRecord([FromBody] AppointmentDto dto)
         {
             if (dto == null)
@@ -31,6 +33,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Clinician,Patient")]
         public async Task<IActionResult> getAllAppointmentRecords()
         {
             var result = await appointmentService.getAllAppointmentRecordsAsync();
@@ -38,6 +41,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{appointmentId}")]
+        [Authorize(Roles = "Clinician,Patient")]
         public async Task<IActionResult> getAppointmentDetailsByAppointmentId(int appointmentId)
         {
             if (appointmentId <= 0)
@@ -60,6 +64,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{appointmentId}")]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> updateAppointmentDetailsByAppointmentId(int appointmentId, [FromBody] AppointmentDto dto)
         {
             if (appointmentId <= 0)
@@ -86,6 +91,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "Clinician,Patient")]
         public async Task<IActionResult> getFilteredAppointmentRecords([FromQuery] AppointmentQueryDto query)
         {
             var result = await appointmentService.getFilteredAppointmentRecordsAsync(query);

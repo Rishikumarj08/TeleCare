@@ -6,7 +6,6 @@ namespace TeleCare.Service.Implementation
     using TeleCare.Model;
     using TeleCare.Repository.Interface;
     using TeleCare.Service.Interface;
-
     public class NotificationService : INotificationService
     {
         private readonly INotificationRepository _notificationRepository;
@@ -26,7 +25,6 @@ namespace TeleCare.Service.Implementation
             var notifications = await _notificationRepository.GetAllNotificationsAsync();
             return notifications.Select(Map).ToList();
         }
-
         public async Task<List<NotificationResponseDto>> GetNotificationsForUserAsync(int userId)
         {
             var notifications = await _notificationRepository.GetNotificationsByUserIdAsync(userId);
@@ -34,13 +32,11 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.NoNotificationsFound);
             return notifications.Select(Map).ToList();
         }
-
         public async Task SendNotificationAsync(NotificationSendDto notificationDto)
         {
             var user = await _userRepository.GetUserByIdAsync(notificationDto.UserID);
             if (user == null)
                 throw new NotFoundException(AppConstants.RecipientUserNotFound);
-
             var notification = new Notification
             {
                 UserID = notificationDto.UserID,

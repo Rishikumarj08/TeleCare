@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -14,6 +15,7 @@ namespace TeleCare.Controllers
         public DeviceController(IDeviceService deviceService) => this.deviceService = deviceService;
 
         [HttpPost]
+        [Authorize(Roles = "DeviceTechnician")]
         public async Task<IActionResult> createDeviceRecord([FromBody] DeviceCreateDto deviceCreateDto)
         {
             if (deviceCreateDto == null) return BadRequest(DeviceConstants.RequestBodyNull);
@@ -23,6 +25,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "DeviceTechnician")]
         public async Task<IActionResult> getDeviceDetailsByDeviceId(int deviceId)
         {
             if (deviceId <= 0) return BadRequest(DeviceConstants.InvalidDeviceId);
@@ -34,6 +37,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "DeviceTechnician")]
         public async Task<IActionResult> updateDeviceDetailsByDeviceId(int deviceId, [FromBody] DeviceUpdateDto deviceUpdateDto)
         {
             if (deviceId <= 0) 
@@ -46,6 +50,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "DeviceTechnician")]
         public async Task<IActionResult> deleteDeviceRecord(int deviceId)
         {
             if (deviceId <= 0) return BadRequest(DeviceConstants.InvalidDeviceId);
@@ -55,6 +60,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = "DeviceTechnician")]
         public async Task<IActionResult> getFilteredDeviceRecords([FromQuery] DeviceQueryDto deviceQueryDto)
         {
             return Ok(await deviceService.getFilteredDeviceRecordsAsync(deviceQueryDto));

@@ -6,7 +6,6 @@ namespace TeleCare.Service.Implementation
     using TeleCare.Model;
     using TeleCare.Repository.Interface;
     using TeleCare.Service.Interface;
-
     public class ClaimService : IClaimService
     {
         private readonly IClaimRepository _claimRepository;
@@ -28,7 +27,6 @@ namespace TeleCare.Service.Implementation
             var claims = await _claimRepository.GetAllClaimsAsync();
             return claims.Select(Map).ToList();
         }
-
         public async Task<ClaimResponseDto> GetClaimByIdAsync(int claimId)
         {
             var claim = await _claimRepository.GetClaimByIdAsync(claimId);
@@ -36,7 +34,6 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.ClaimNotFound);
             return Map(claim);
         }
-
         public async Task<List<ClaimResponseDto>> SearchClaimsAsync(SearchClaimDto searchDto)
         {
             var claims = await _claimRepository.SearchClaimsAsync(searchDto);
@@ -44,7 +41,6 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.NoClaimsFound);
             return claims.Select(Map).ToList();
         }
-
         public async Task CreateClaimAsync(ClaimCreateDto claimDto)
         {
             var patient = await _userRepository.GetUserByIdAsync(claimDto.PatientID);

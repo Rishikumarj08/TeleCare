@@ -16,29 +16,31 @@ namespace TeleCare.Constants
         public const string EmailAlreadyRegistered = "An account already exists with this email.";
         public const string RegistrationRestricted = "Registration is permitted only for patient or administrator roles.";
 
+ 
         // Rule
         public const string NoRulesFound = "No rules found.";
         public const string RuleNotFound = "Rule not found.";
         public const string RuleNameRequired = "Rule name is required.";
-
+ 
         // Payer
         public const string NoPayersFound = "No payers found.";
         public const string PayerNotFound = "Payer not found.";
-
+ 
         // Claim
         public const string NoClaimsFound = "No claims found.";
         public const string ClaimNotFound = "Claim not found.";
         public const string PatientNotFound = "Patient not found.";
 
+ 
         // Payment
         public const string NoPaymentsFound = "No payments found.";
         public const string PaymentNotFound = "Payment not found.";
         public const string ClaimNotFoundForPayment = "The referenced claim does not exist.";
-
+ 
         // Charge
         public const string NoChargesFound = "No charges found.";
         public const string ChargeNotFound = "Charge not found.";
-
+ 
         // Notification
         public const string NoNotificationsFound = "No notifications found.";
         public const string NotificationNotFound = "Notification not found.";

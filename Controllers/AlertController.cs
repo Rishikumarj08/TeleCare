@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TeleCare.DTO;
 using TeleCare.Service.Interface;
 using TeleCare.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeleCare.Controllers
 {
@@ -17,6 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> createAlertRecord([FromBody] AlertDto alertDto)
         {
             if (alertDto == null)
@@ -31,6 +33,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> getAllAlertRecords()
         {
             var result = await alertService.getAllAlertRecordsAsync();
@@ -38,6 +41,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{alertId}")]
+        [Authorize(Roles = "Clinician")]
         public async Task<IActionResult> getAlertDetailsByAlertId(int alertId)
         {
             if (alertId <= 0)
@@ -60,6 +64,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{alertId}")]
+        [Authorize(Roles ="Clinician")]
         public async Task<IActionResult> updateAlertDetailsByAlertId(int alertId, [FromBody] AlertDto alertDto)
         {
             if (alertId <= 0)

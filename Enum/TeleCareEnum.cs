@@ -9,14 +9,14 @@ namespace TeleCare.Enum
         Administrator = 5,
         Auditor = 6
     }
-
+ 
     public enum RuleStatus
     {
         Active,
         Inactive,
         Draft
     }
-
+ 
     public enum ClaimStatus
     {
         Pending,
@@ -25,7 +25,7 @@ namespace TeleCare.Enum
         Rejected,
         Paid
     }
-
+ 
     public enum PaymentStatus
     {
         Pending,
@@ -33,7 +33,7 @@ namespace TeleCare.Enum
         Failed,
         Refunded
     }
-
+ 
     public enum PaymentMethod
     {
         UPI,
@@ -43,7 +43,7 @@ namespace TeleCare.Enum
         Cash,
         Cheque
     }
-
+ 
     public enum ChargeStatus
     {
         Pending,
@@ -52,13 +52,13 @@ namespace TeleCare.Enum
         Waived,
         Overdue
     }
-
+ 
     public enum NotificationStatus
     {
         Unread,
         Read
     }
-
+ 
     public enum NotificationCategory
     {
         Alert,

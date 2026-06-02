@@ -18,9 +18,8 @@ namespace TeleCare.Controllers
             _service = service;
         }
 
-        //  GET ALL (SEARCH + FILTER)
         [HttpGet]
-        //[Authorize(Roles = "Admin,Patient,CareCoordinator,Clinician")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetAllMedications([FromQuery] MedicationSearchDto searchDto)
         {
             if (!ModelState.IsValid)
@@ -33,9 +32,8 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        //  GET BY STATUS
         [HttpGet("status/{status}")]
-       // [Authorize(Roles = "Admin,Patient,CareCoordinator,Clinician")]
+        [Authorize(Roles = "Admin,Patient,CareCoordinator")]
         public async Task<IActionResult> GetMedicationsByStatus(MedicationStatus status)
         {
             var searchDto = new MedicationSearchDto
@@ -50,7 +48,7 @@ namespace TeleCare.Controllers
 
         // GET BY ID
         [HttpGet("{medicationId}")]
-        //[Authorize(Roles = "Admin,Patient,CareCoordinator,Clinician")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetMedicationById(int medicationId)
         {
             if (medicationId <= 0)
@@ -70,7 +68,7 @@ namespace TeleCare.Controllers
 
         // CREATE
         [HttpPost]
-       // [Authorize(Roles = "Admin,CareCoordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> CreateMedication(
             [FromQuery] int patientId,
             [FromBody] MedicationRequestDto dto)
@@ -92,7 +90,7 @@ namespace TeleCare.Controllers
 
         //  UPDATE
         [HttpPut("{medicationId}")]
-        //[Authorize(Roles = "Admin,CareCoordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> UpdateMedication(
             int medicationId,
             [FromBody] MedicationRequestDto dto)

@@ -6,7 +6,6 @@ namespace TeleCare.Service.Implementation
     using TeleCare.Model;
     using TeleCare.Repository.Interface;
     using TeleCare.Service.Interface;
-
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
@@ -26,7 +25,6 @@ namespace TeleCare.Service.Implementation
             var payments = await _paymentRepository.GetAllPaymentsAsync();
             return payments.Select(Map).ToList();
         }
-
         public async Task<PaymentResponseDto> GetPaymentByIdAsync(int paymentId)
         {
             var payment = await _paymentRepository.GetPaymentByIdAsync(paymentId);
@@ -34,7 +32,6 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.PaymentNotFound);
             return Map(payment);
         }
-
         public async Task<List<PaymentResponseDto>> SearchPaymentsAsync(SearchPaymentDto searchDto)
         {
             var payments = await _paymentRepository.SearchPaymentsAsync(searchDto);
@@ -42,13 +39,11 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.NoPaymentsFound);
             return payments.Select(Map).ToList();
         }
-
         public async Task CreatePaymentAsync(PaymentCreateDto paymentDto)
         {
             var claim = await _claimRepository.GetClaimByIdAsync(paymentDto.ClaimID);
             if (claim == null)
                 throw new NotFoundException(AppConstants.ClaimNotFoundForPayment);
-
             var payment = new Payment
             {
                 ClaimID = paymentDto.ClaimID,
