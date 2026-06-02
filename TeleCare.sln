@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleCare", "TeleCare.csproj", "{9E7D56BA-4383-1D26-056A-625EF329333E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E7D56BA-4383-1D26-056A-625EF329333E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E7D56BA-4383-1D26-056A-625EF329333E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E7D56BA-4383-1D26-056A-625EF329333E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E7D56BA-4383-1D26-056A-625EF329333E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C926B4E8-0EE7-417A-B23D-D0DE482460FA}
+	EndGlobalSection
+EndGlobal
