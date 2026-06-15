@@ -17,9 +17,7 @@ public class AuditorPatientVisitController : ControllerBase
         _visitNoteService = visitNoteService;
     }
 
-    /// <summary>
-    /// Get all patient visits with PatientName joined from Patients table
-    /// </summary>
+    
     [HttpGet]
     public async Task<IActionResult> GetAllPatientVisits()
     {
@@ -27,9 +25,7 @@ public class AuditorPatientVisitController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Search patient visits by PatientName, VisitNoteStatus, SearchText (any one is sufficient)
-    /// </summary>
+    
     [HttpPost("search")]
     public async Task<IActionResult> SearchPatientVisits([FromBody] SearchVisitNoteDto searchDto)
     {

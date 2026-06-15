@@ -4,7 +4,6 @@ using TeleCare.Enums;
 
 namespace TeleCare.Dto
 {
-    //  CREATE & UPDATE DTO (used in Controller & Service)
     public class MedicationRequestDto
     {
         [Required]
@@ -31,7 +30,6 @@ namespace TeleCare.Dto
         public MedicationStatus Status { get; set; } = MedicationStatus.Active;
     }
 
-    //  SEARCH / FILTER DTO (used in Controller, Repository, Service)
     public class MedicationSearchDto
     {
         public string? Keyword { get; set; }
@@ -45,7 +43,6 @@ namespace TeleCare.Dto
         public int PageSize { get; set; } = 10;
     }
 
-    //  RESPONSE DTO (used in Service return)
     public class MedicationResponseDto
     {
         public string Name { get; set; } = string.Empty;

@@ -18,9 +18,7 @@ public class AdminNotificationController : ControllerBase
         _notificationService = notificationService;
     }
  
-    /// <summary>
-    /// Get all notifications (bell icon list for the administrator)
-    /// </summary>
+    
     [HttpGet]
     public async Task<IActionResult> GetAllNotifications()
     {
@@ -28,9 +26,7 @@ public class AdminNotificationController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Get all notifications for a specific user
-    /// </summary>
+    
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetNotificationsForUser(int userId)
     {
@@ -38,9 +34,7 @@ public class AdminNotificationController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Send a notification to a user (requires UserID, Category, Message)
-    /// </summary>
+    
     [HttpPost("send")]
     public async Task<IActionResult> SendNotification([FromBody] NotificationSendDto notificationDto)
     {
@@ -51,9 +45,6 @@ public class AdminNotificationController : ControllerBase
         return Ok(AppConstants.RecordCreated);
     }
  
-    /// <summary>
-    /// Delete a notification
-    /// </summary>
     [HttpDelete("{notificationId}")]
     public async Task<IActionResult> DeleteNotification(int notificationId)
     {

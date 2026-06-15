@@ -15,7 +15,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ CORS Policy
+//  CORS Configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -26,12 +26,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ✅ Database Configuration
+//  Database Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ✅ Dependency Injection
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+//  Dependency Injection
+builder.Services.AddScoped<IPatientRepository, PatientRepository>(); 
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
@@ -75,19 +75,19 @@ builder.Services.AddScoped<IChargeService, ChargeService>();
 
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-// ✅ Dependency Injection — Audit Logs
+//  Dependency Injection — Audit Logs
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
-// ✅ Dependency Injection — KPI
+//  Dependency Injection — KPI
 builder.Services.AddScoped<IKpiRepository, KpiRepository>();
 builder.Services.AddScoped<IKpiService, KpiService>();
 
-// ✅ Dependency Injection — Auditor Patient Visits
+//  Dependency Injection — Auditor Patient Visits
 builder.Services.AddScoped<IAuditorVisitNoteService, AuditorVisitNoteService>();
 
 
 
-// ✅ Controllers
+//  Controllers
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidateModelAttribute>();
@@ -112,7 +112,7 @@ builder.Services.AddScoped<IMedicationService, MedicationService>();
 builder.Services.AddScoped<ICarePlanRepository, CarePlanRepository>();
 builder.Services.AddScoped<ICarePlanService, CarePlanService>();
 
-// ✅ Swagger + JWT (FIXED)
+//  Swagger + JWT (FIXED)
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -131,7 +131,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// ✅ Authentication
+//  Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -159,10 +159,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// ✅ Global Exception Middleware
+//  Global Exception Middleware
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-// ✅ Swagger (Development Only)
+//  Swagger (Development Only)
 if (app.Environment.IsDevelopment())
 {
     app.UseStaticFiles();

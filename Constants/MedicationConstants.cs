@@ -1,11 +1,10 @@
 namespace TeleCare.Constants
 {
-    /// Centralized API response messages and constants.
-    /// This ensures consistent messaging across all endpoints.
+    
   
     public static class ApiConstants
     {
-        // Success Messages
+      
         public const string Success = "Operation completed successfully";
         public const string CreatedSuccessfully = "Resource created successfully";
         public const string UpdatedSuccessfully = "Resource updated successfully";

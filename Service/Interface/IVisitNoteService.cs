@@ -4,15 +4,14 @@ namespace TeleCare.Service.Interface
 {
     public interface IVisitNoteService
     {
-        Task<VisitNoteDto?> createVisitNoteRecordAsync(VisitNoteDto visitNoteDto);
+        Task<VisitNoteResponseDto> createVisitNoteAsync(VisitNoteCreateDto dto);
 
-        Task<List<VisitNoteDto>> getAllVisitNoteRecordsAsync();
+        Task<List<VisitNoteResponseDto>> getAllVisitNotesAsync();
 
-        Task<VisitNoteDto?> getVisitNoteDetailsByVisitNoteIdAsync(int visitNoteId);
+        Task<VisitNoteResponseDto?> getVisitNoteByIdAsync(int noteId);
 
-        Task<VisitNoteDto?> updateVisitNoteDetailsByVisitNoteIdAsync(int visitNoteId, VisitNoteDto visitNoteDto);
+        Task<VisitNoteResponseDto?> updateVisitNoteAsync(int noteId, VisitNoteCreateDto dto);
 
-        Task<List<VisitNoteDto>> getFilteredVisitNoteRecordsAsync(VisitNoteQueryDto queryDto);
-
+        Task<List<VisitNoteResponseDto>> getFilteredVisitNotesAsync(VisitNoteQueryDto queryDto);
     }
 }

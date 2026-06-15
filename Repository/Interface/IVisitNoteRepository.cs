@@ -5,15 +5,14 @@ namespace TeleCare.Repository.Interface
 {
     public interface IVisitNoteRepository
     {
-        Task<VisitNote?> createVisitNoteRecordAsync(VisitNote visitNote);
+        Task<VisitNote> createVisitNoteAsync(VisitNote visitNote);
 
-        Task<List<VisitNote>> getAllVisitNoteRecordsAsync();
+        Task<List<VisitNote>> getAllVisitNotesAsync();
 
-        Task<VisitNote?> getVisitNoteRecordByVisitNoteIdAsync(int visitNoteId);
+        Task<VisitNote?> getVisitNoteByIdAsync(int noteId);
 
-        Task<VisitNote?> updateVisitNoteRecordByVisitNoteIdAsync(VisitNote visitNote);
+        Task<VisitNote> updateVisitNoteAsync(VisitNote visitNote);
 
-        Task<List<VisitNote>> getFilteredVisitNoteRecordsAsync(VisitNoteQueryDto queryDto);
-
+        Task<List<VisitNote>> getFilteredVisitNotesAsync(VisitNoteQueryDto queryDto);
     }
 }

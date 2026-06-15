@@ -12,7 +12,7 @@ using TeleCare.Service.Interface;
 public class AdminChargeController : ControllerBase
 {
     private readonly IChargeService _chargeService;
-    // Constructor to inject the charge service
+    
  
     public AdminChargeController(IChargeService chargeService)
     {
@@ -20,9 +20,7 @@ public class AdminChargeController : ControllerBase
         _chargeService = chargeService;
     }
  
-    /// <summary>
-    /// Get all charges
-    /// </summary>
+    
     [HttpGet]
     public async Task<IActionResult> GetAllCharges()
     {
@@ -30,9 +28,7 @@ public class AdminChargeController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Search charges by ChargeID, PatientName, Date, Status (any one attribute is sufficient)
-    /// </summary>
+    
     [HttpPost("search")]
     public async Task<IActionResult> SearchCharges([FromBody] SearchChargeDto searchDto)
     {

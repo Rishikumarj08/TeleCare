@@ -28,11 +28,7 @@ public class UserNotificationController : ControllerBase
 
     }
  
-    /// <summary>
-
-    /// User views their own notifications
-
-    /// </summary>
+    
 
     [HttpGet("{userId}")]
 
@@ -46,11 +42,7 @@ public class UserNotificationController : ControllerBase
 
     }
  
-    /// <summary>
-
-    /// User marks a notification as read
-
-    /// </summary>
+    
 
     [HttpPatch("{notificationId}/read")]
 

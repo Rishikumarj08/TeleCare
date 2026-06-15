@@ -18,9 +18,7 @@ public class AdminRuleController : ControllerBase
         _ruleService = ruleService;
     }
  
-    /// <summary>
-    /// Get all rules (RuleID is intentionally excluded from response DTO display)
-    /// </summary>
+   
     [HttpGet]
     public async Task<IActionResult> GetAllRules()
     {
@@ -28,9 +26,7 @@ public class AdminRuleController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Search rules by RuleID, Name, Status, ActiveFrom, ActiveTo (any one attribute is sufficient)
-    /// </summary>
+    
     [HttpPost("search")]
     public async Task<IActionResult> SearchRules([FromBody] SearchRuleDto searchDto)
     {

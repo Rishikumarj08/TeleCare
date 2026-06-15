@@ -4,14 +4,14 @@ namespace TeleCare.Service.Interface
 {
     public interface IAppointmentService
     {
-        Task<AppointmentDto?> createAppointmentRecordAsync(AppointmentDto appointmentDto);
+        Task<AppointmentResponseDto> createAppointmentAsync(AppointmentCreateDto dto);
 
-        Task<List<AppointmentDto>> getAllAppointmentRecordsAsync();
+        Task<List<AppointmentResponseDto>> getAllAppointmentsAsync();
 
-        Task<AppointmentDto?> getAppointmentDetailsByAppointmentIdAsync(int appointmentId);
+        Task<AppointmentResponseDto?> getAppointmentByIdAsync(int appointmentId);
 
-        Task<AppointmentDto?> updateAppointmentDetailsByAppointmentIdAsync(int appointmentId, AppointmentDto appointmentDto);
+        Task<AppointmentResponseDto?> updateAppointmentAsync(int appointmentId, AppointmentCreateDto dto);
 
-        Task<List<AppointmentDto>> getFilteredAppointmentRecordsAsync(AppointmentQueryDto queryDto);
+        Task<List<AppointmentResponseDto>> getFilteredAppointmentsAsync(AppointmentQueryDto queryDto);
     }
 }

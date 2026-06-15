@@ -16,11 +16,11 @@ namespace TeleCare.DTO
 
         [Required]
         [StringLength(100, MinimumLength = 2)]
-        public string PlanName { get; set; }
+        public string PlanName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -34,10 +34,10 @@ namespace TeleCare.DTO
         public int CarePlanID { get; set; }
 
         [StringLength(100, MinimumLength = 2)]
-        public string PlanName { get; set; }
+        public string PlanName { get; set; } = string.Empty;
 
         [StringLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required]
         public CarePlanStatus Status { get; set; }
@@ -45,8 +45,8 @@ namespace TeleCare.DTO
 
     public class CarePlanResponseDTO
     {
-        public string PlanName { get; set; }
-        public string Description { get; set; }
+        public string PlanName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public CarePlanStatus Status { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }

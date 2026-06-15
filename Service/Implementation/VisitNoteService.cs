@@ -17,122 +17,90 @@ namespace TeleCare.Service.Implementation
             _auditLogService = auditLogService;
         }
 
-        public async Task<VisitNoteDto?> createVisitNoteRecordAsync(VisitNoteDto dto)
+        public async Task<VisitNoteResponseDto> createVisitNoteAsync(VisitNoteCreateDto dto)
         {
             var entity = new VisitNote
             {
-                PatientReferenceNumber = dto.PatientReferenceNumber,
-                Notes = dto.Notes,
-                Diagnosis = dto.Diagnosis,
-                Orders = dto.Orders,
-                AttachmentName = dto.AttachmentName,
-                VisitNoteStatus = dto.VisitNoteStatus,
-                CreatedOn = DateTime.Now
+                AppID = dto.AppID,
+                PatientID = dto.PatientID,
+                ClinicianID = dto.ClinicianID,
+                NoteText = dto.NoteText,
+                DiagnosesJSON = dto.DiagnosesJSON,
+                OrdersJSON = dto.OrdersJSON,
+                AttachmentsURIJSON = dto.AttachmentsURIJSON,
+                CreatedAt = DateTime.UtcNow
             };
 
             Validate(entity);
 
-            var result = await repository.createVisitNoteRecordAsync(entity);
+            var result = await repository.createVisitNoteAsync(entity);
 
-            if (result != null)
-            {
-                dto.VisitNoteId = result.Id;
-            }
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "VisitNote", result.NoteID,
+                $"VisitNote created for Patient '{dto.PatientID}'.");
 
-            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "VisitNote", result?.Id,
-                $"Visit note created for patient '{dto.PatientReferenceNumber}'.");
-
-            return dto;
+            return MapToResponseDto(result);
         }
 
-        public async Task<List<VisitNoteDto>> getAllVisitNoteRecordsAsync()
+        public async Task<List<VisitNoteResponseDto>> getAllVisitNotesAsync()
         {
-            var data = await repository.getAllVisitNoteRecordsAsync();
+            var data = await repository.getAllVisitNotesAsync();
 
-            return data.Select(x => new VisitNoteDto
-            {
-                VisitNoteId = x.Id,
-                PatientReferenceNumber = x.PatientReferenceNumber,
-                Notes = x.Notes,
-                Diagnosis = x.Diagnosis,
-                Orders = x.Orders,
-                AttachmentName = x.AttachmentName,
-                VisitNoteStatus = x.VisitNoteStatus
-            }).ToList();
+            return data.Select(x => MapToResponseDto(x)).ToList();
         }
 
-        public async Task<VisitNoteDto?> getVisitNoteDetailsByVisitNoteIdAsync(int id)
+        public async Task<VisitNoteResponseDto?> getVisitNoteByIdAsync(int noteId)
         {
-            var entity = await repository.getVisitNoteRecordByVisitNoteIdAsync(id);
-
-            return entity == null ? null : new VisitNoteDto
-            {
-                VisitNoteId = entity.Id,
-                PatientReferenceNumber = entity.PatientReferenceNumber,
-                Notes = entity.Notes,
-                Diagnosis = entity.Diagnosis,
-                Orders = entity.Orders,
-                AttachmentName = entity.AttachmentName,
-                VisitNoteStatus = entity.VisitNoteStatus
-            };
-        }
-
-        public async Task<VisitNoteDto?> updateVisitNoteDetailsByVisitNoteIdAsync(int id, VisitNoteDto dto)
-        {
-            var entity = await repository.getVisitNoteRecordByVisitNoteIdAsync(id);
+            var entity = await repository.getVisitNoteByIdAsync(noteId);
 
             if (entity == null) return null;
 
-            entity = ApplyUpdate(entity, dto);
-
-            var updated = await repository.updateVisitNoteRecordByVisitNoteIdAsync(entity);
-
-            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "UPDATE", "VisitNote", id,
-                $"Visit note '{id}' updated for patient '{entity.PatientReferenceNumber}'.");
-
-            return updated == null ? null : Map(updated);
+            return MapToResponseDto(entity);
         }
 
-        public async Task<List<VisitNoteDto>> getFilteredVisitNoteRecordsAsync(VisitNoteQueryDto query)
+        public async Task<VisitNoteResponseDto?> updateVisitNoteAsync(int noteId, VisitNoteCreateDto dto)
         {
-            var data = await repository.getFilteredVisitNoteRecordsAsync(query);
+            var entity = await repository.getVisitNoteByIdAsync(noteId);
 
-            return data.Select(x => new VisitNoteDto
-            {
-                VisitNoteId = x.Id,
-                PatientReferenceNumber = x.PatientReferenceNumber,
-                Notes = x.Notes,
-                Diagnosis = x.Diagnosis,
-                Orders = x.Orders,
-                AttachmentName = x.AttachmentName,
-                VisitNoteStatus = x.VisitNoteStatus
-            }).ToList();
-        }
+            if (entity == null) return null;
 
-        private VisitNote ApplyUpdate(VisitNote entity, VisitNoteDto dto)
-        {
-            entity.Notes = dto.Notes;
-            entity.Diagnosis = dto.Diagnosis;
-            entity.Orders = dto.Orders;
-            entity.AttachmentName = dto.AttachmentName;
-            entity.VisitNoteStatus = dto.VisitNoteStatus;
+            entity.AppID = dto.AppID;
+            entity.PatientID = dto.PatientID;
+            entity.ClinicianID = dto.ClinicianID;
+            entity.NoteText = dto.NoteText;
+            entity.DiagnosesJSON = dto.DiagnosesJSON;
+            entity.OrdersJSON = dto.OrdersJSON;
+            entity.AttachmentsURIJSON = dto.AttachmentsURIJSON;
 
             Validate(entity);
 
-            return entity;
+            var updated = await repository.updateVisitNoteAsync(entity);
+
+            await _auditLogService.LogAsync(entity.PatientID, "UPDATE", "VisitNote", noteId,
+                $"VisitNote '{noteId}' updated.");
+
+            return MapToResponseDto(updated);
         }
 
-        private VisitNoteDto Map(VisitNote entity)
+        public async Task<List<VisitNoteResponseDto>> getFilteredVisitNotesAsync(VisitNoteQueryDto query)
         {
-            return new VisitNoteDto
+            var data = await repository.getFilteredVisitNotesAsync(query);
+
+            return data.Select(x => MapToResponseDto(x)).ToList();
+        }
+
+        private static VisitNoteResponseDto MapToResponseDto(VisitNote entity)
+        {
+            return new VisitNoteResponseDto
             {
-                VisitNoteId = entity.Id,
-                PatientReferenceNumber = entity.PatientReferenceNumber,
-                Notes = entity.Notes,
-                Diagnosis = entity.Diagnosis,
-                Orders = entity.Orders,
-                AttachmentName = entity.AttachmentName,
-                VisitNoteStatus = entity.VisitNoteStatus
+                NoteID = entity.NoteID,
+                AppID = entity.AppID,
+                PatientID = entity.PatientID,
+                ClinicianID = entity.ClinicianID,
+                NoteText = entity.NoteText,
+                DiagnosesJSON = entity.DiagnosesJSON,
+                OrdersJSON = entity.OrdersJSON,
+                AttachmentsURIJSON = entity.AttachmentsURIJSON,
+                CreatedAt = entity.CreatedAt
             };
         }
 

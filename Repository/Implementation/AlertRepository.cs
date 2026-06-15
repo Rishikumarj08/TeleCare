@@ -14,25 +14,25 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<Alert?> createAlertRecordAsync(Alert alert)
+        public async Task<Alert> createAlertAsync(Alert alert)
         {
             await context.Alerts.AddAsync(alert);
             await context.SaveChangesAsync();
             return alert;
         }
 
-        public async Task<List<Alert>> getAllAlertRecordsAsync()
+        public async Task<List<Alert>> getAllAlertsAsync()
         {
             return await context.Alerts.ToListAsync();
         }
 
-        public async Task<Alert?> getAlertRecordByAlertIdAsync(int alertId)
+        public async Task<Alert?> getAlertByIdAsync(int alertId)
         {
             return await context.Alerts
-                .FirstOrDefaultAsync(x => x.Id == alertId);
+                .FirstOrDefaultAsync(x => x.AlertID == alertId);
         }
 
-        public async Task<Alert?> updateAlertRecordByAlertIdAsync(Alert alert)
+        public async Task<Alert> updateAlertAsync(Alert alert)
         {
             context.Alerts.Update(alert);
             await context.SaveChangesAsync();

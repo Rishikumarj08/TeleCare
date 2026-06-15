@@ -3,7 +3,6 @@ using TeleCare.Enum;
 
 namespace TeleCare.DTO
 {
-    // Used for GET responses
     public class PatientResponseDto
     {
         public int PatientID { get; set; }
@@ -22,7 +21,6 @@ namespace TeleCare.DTO
         public DateTime CreatedAt { get; set; }
     }
 
-    // Used for POST (Create) - PatientID is NOT here
     public class PatientCreateDto
     {
         public int UserID { get; set; }
@@ -38,7 +36,6 @@ namespace TeleCare.DTO
         public required string EnrolledProgramsJSON { get; set; }
     }
 
-    // Used for PUT (Update)
     public class PatientUpdateDto
     {
         public int PatientID { get; set; }

@@ -128,7 +128,6 @@ namespace TeleCare.Service.Implementation
             await _kpiRepository.DeleteKpiAsync(kpi);
         }
 
-        // ✅ Auto-calculates CurrentValue as percentage from the database
         private async Task<decimal> CalculateCurrentValueAsync(string kpiName)
         {
             switch (kpiName.Trim().ToLower())
@@ -160,12 +159,12 @@ namespace TeleCare.Service.Implementation
 
                 case "appointment completion rate":
                     var totalAppointments = await _context.Appointments.CountAsync();
-                    var completedAppointments = await _context.Appointments.CountAsync(a => a.AppointmentStatus == AppointmentStatusEnum.Completed);
+                    var completedAppointments = await _context.Appointments.CountAsync(a => a.Status != null && a.Status.Trim().ToLower() == "completed");
                     return totalAppointments == 0 ? 0 : Math.Round((decimal)completedAppointments / totalAppointments * 100, 2);
 
                 case "alert resolution rate":
                     var totalAlerts = await _context.Alerts.CountAsync();
-                    var resolvedAlerts = await _context.Alerts.CountAsync(a => a.AlertStatus == AlertStatusEnum.Resolved);
+                    var resolvedAlerts = await _context.Alerts.CountAsync(a => a.Status != null && a.Status.Trim().ToLower() == "resolved");
                     return totalAlerts == 0 ? 0 : Math.Round((decimal)resolvedAlerts / totalAlerts * 100, 2);
 
                 case "enrollment active rate":
@@ -188,7 +187,6 @@ namespace TeleCare.Service.Implementation
             }
         }
 
-        // ✅ Computes PerformanceIndicator by comparing CurrentValue vs TargetValue
         private static string GetPerformanceIndicator(decimal currentValue, decimal targetValue)
         {
             if (currentValue >= targetValue)

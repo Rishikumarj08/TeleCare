@@ -15,59 +15,54 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<Appointment?> createAppointmentRecordAsync(Appointment appointment)
+        public async Task<Appointment> createAppointmentAsync(Appointment appointment)
         {
             await context.Appointments.AddAsync(appointment);
             await context.SaveChangesAsync();
             return appointment;
         }
 
-        public async Task<List<Appointment>> getAllAppointmentRecordsAsync()
+        public async Task<List<Appointment>> getAllAppointmentsAsync()
         {
             return await context.Appointments.ToListAsync();
         }
 
-        public async Task<Appointment?> getAppointmentRecordByAppointmentIdAsync(int appointmentId)
+        public async Task<Appointment?> getAppointmentByIdAsync(int appointmentId)
         {
             return await context.Appointments
-                .FirstOrDefaultAsync(x => x.Id == appointmentId);
+                .FirstOrDefaultAsync(x => x.AppID == appointmentId);
         }
 
-        public async Task<Appointment?> updateAppointmentRecordByAppointmentIdAsync(Appointment appointment)
+        public async Task<Appointment> updateAppointmentAsync(Appointment appointment)
         {
             context.Appointments.Update(appointment);
             await context.SaveChangesAsync();
             return appointment;
         }
 
-        public async Task<List<Appointment>> getFilteredAppointmentRecordsAsync(AppointmentQueryDto queryDto)
+        public async Task<List<Appointment>> getFilteredAppointmentsAsync(AppointmentQueryDto queryDto)
         {
             var query = context.Appointments.AsQueryable();
 
-            // CONDITION 1: Search by AppointmentType or AppointmentMode
             if (!string.IsNullOrWhiteSpace(queryDto.SearchText))
             {
                 query = query.Where(x =>
-                    x.AppointmentType.Contains(queryDto.SearchText) ||
-                    x.AppointmentMode.Contains(queryDto.SearchText));
+                    x.Mode.Contains(queryDto.SearchText) ||
+                    x.Status.Contains(queryDto.SearchText));
             }
 
-            // CONDITION 2: Filter by Status
-            if (queryDto.AppointmentStatus.HasValue)
+            if (!string.IsNullOrWhiteSpace(queryDto.Status))
             {
-                query = query.Where(x => x.AppointmentStatus == queryDto.AppointmentStatus.Value);
+                query = query.Where(x => x.Status == queryDto.Status);
             }
 
-            // CONDITION 3: Filter by Date (only date part)
-            if (queryDto.AppointmentDate.HasValue)
+            if (queryDto.ScheduledAt.HasValue)
             {
-                var date = queryDto.AppointmentDate.Value.Date;
-
-                query = query.Where(x => x.AppointmentDateTime.Date == date);
+                var date = queryDto.ScheduledAt.Value.Date;
+                query = query.Where(x => x.ScheduledAt.Date == date);
             }
 
             return await query.ToListAsync();
         }
-
     }
 }

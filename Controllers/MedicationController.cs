@@ -46,7 +46,7 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        // GET BY ID
+        
         [HttpGet("{medicationId}")]
         [Authorize(Roles = "Patient,Care Coordinator")]
         public async Task<IActionResult> GetMedicationById(int medicationId)
@@ -66,7 +66,7 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        // CREATE
+        
         [HttpPost]
         [Authorize(Roles = "Care Coordinator")]
         public async Task<IActionResult> CreateMedication(
@@ -88,7 +88,7 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        //  UPDATE
+        
         [HttpPut("{medicationId}")]
         [Authorize(Roles = "Care Coordinator")]
         public async Task<IActionResult> UpdateMedication(

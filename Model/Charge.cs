@@ -15,7 +15,6 @@ namespace TeleCare.Model
  
         public required string Status { get; set; }
  
-        // Navigation property
         public User? Patient { get; set; }
     }
 }

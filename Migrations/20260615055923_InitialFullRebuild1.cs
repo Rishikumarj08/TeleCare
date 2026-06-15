@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeleCare.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialFullRebuild : Migration
+    public partial class InitialFullRebuild1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,18 +35,20 @@ namespace TeleCare.Migrations
                 name: "Alerts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    AlertID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientReferenceNumber = table.Column<int>(type: "int", nullable: false),
-                    AlertType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AlertSeverity = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AlertStatus = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    RuleID = table.Column<int>(type: "int", nullable: false),
+                    TriggeredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Severity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssignedToFK = table.Column<int>(type: "int", nullable: false),
+                    AcknowledgedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ResolvedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Alerts", x => x.Id);
+                    table.PrimaryKey("PK_Alerts", x => x.AlertID);
                 });
 
             migrationBuilder.CreateTable(

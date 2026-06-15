@@ -19,75 +19,66 @@ namespace TeleCare.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> createAlertRecord([FromBody] AlertDto alertDto)
+        public async Task<IActionResult> createAlert([FromBody] AlertCreateDto dto)
         {
-            if (alertDto == null)
+            if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await alertService.createAlertRecordAsync(alertDto);
-                return Ok(result);
-            }
+
+            var result = await alertService.createAlertAsync(dto);
+            return Ok(result);
         }
 
         [HttpGet]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> getAllAlertRecords()
+        public async Task<IActionResult> getAllAlerts()
         {
-            var result = await alertService.getAllAlertRecordsAsync();
+            var result = await alertService.getAllAlertsAsync();
             return Ok(result);
         }
 
         [HttpGet("{alertId}")]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> getAlertDetailsByAlertId(int alertId)
+        public async Task<IActionResult> getAlertById(int alertId)
         {
             if (alertId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidAlertId);
             }
-            else
-            {
-                var result = await alertService.getAlertDetailsByAlertIdAsync(alertId);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.AlertNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await alertService.getAlertByIdAsync(alertId);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.AlertNotFound);
             }
+
+            return Ok(result);
         }
 
         [HttpPut("{alertId}")]
-        [Authorize(Roles ="Clinician")]
-        public async Task<IActionResult> updateAlertDetailsByAlertId(int alertId, [FromBody] AlertDto alertDto)
+        [Authorize(Roles = "Clinician")]
+        public async Task<IActionResult> updateAlert(int alertId, [FromBody] AlertCreateDto dto)
         {
             if (alertId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidAlertId);
             }
-            else if (alertDto == null)
+
+            if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await alertService.updateAlertDetailsByAlertIdAsync(alertId, alertDto);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.AlertNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await alertService.updateAlertAsync(alertId, dto);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.AlertNotFound);
             }
+
+            return Ok(result);
         }
     }
 }

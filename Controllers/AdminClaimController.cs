@@ -21,9 +21,7 @@ public class AdminClaimController : ControllerBase
         _payerRepository = payerRepository;
     }
  
-    /// <summary>
-    /// Get all claims
-    /// </summary>
+    
     [HttpGet]
     public async Task<IActionResult> GetAllClaims()
     {
@@ -31,9 +29,7 @@ public class AdminClaimController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Search claims by ClaimID, PatientName, PayerName, Status, SubmittedAt (any one attribute is sufficient)
-    /// </summary>
+    
     [HttpPost("search")]
     public async Task<IActionResult> SearchClaims([FromBody] SearchClaimDto searchDto)
     {
@@ -71,9 +67,7 @@ public class AdminClaimController : ControllerBase
         return Ok(AppConstants.RecordDeleted);
     }
  
-    /// <summary>
-    /// Lookup endpoint — returns payer list for the claim add/edit dropdown in the admin interface
-    /// </summary>
+    
     [HttpGet("payers")]
     public async Task<IActionResult> GetPayers()
     {

@@ -17,9 +17,7 @@ public class AuditorAuditLogController : ControllerBase
         _auditLogService = auditLogService;
     }
 
-    /// <summary>
-    /// Get all audit logs — Auditor read-only access
-    /// </summary>
+    
     [HttpGet]
     public async Task<IActionResult> GetAllAuditLogs()
     {
@@ -27,9 +25,7 @@ public class AuditorAuditLogController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Search audit logs by Action, ResourceType, PerformedBy, FromDate, ToDate (any one attribute is sufficient)
-    /// </summary>
+    
     [HttpPost("search")]
     public async Task<IActionResult> SearchAuditLogs([FromBody] SearchAuditLogDto searchDto)
     {

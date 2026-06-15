@@ -21,9 +21,7 @@ public class AdminPaymentController : ControllerBase
         _payerRepository = payerRepository;
     }
  
-    /// <summary>
-    /// Get all payments
-    /// </summary>
+   
     [HttpGet]
     public async Task<IActionResult> GetAllPayments()
     {
@@ -31,9 +29,7 @@ public class AdminPaymentController : ControllerBase
         return Ok(result);
     }
  
-    /// <summary>
-    /// Search payments by PaymentID, PatientName, PayerName, Method, Status (any one attribute is sufficient)
-    /// </summary>
+  
     [HttpPost("search")]
     public async Task<IActionResult> SearchPayments([FromBody] SearchPaymentDto searchDto)
     {
@@ -71,9 +67,7 @@ public class AdminPaymentController : ControllerBase
         return Ok(AppConstants.RecordDeleted);
     }
  
-    /// <summary>
-    /// Lookup endpoint — returns payer list for the payment add/edit dropdown in the admin interface
-    /// </summary>
+    
     [HttpGet("payers")]
     public async Task<IActionResult> GetPayers()
     {

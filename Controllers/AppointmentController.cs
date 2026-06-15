@@ -19,82 +19,73 @@ namespace TeleCare.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> createAppointmentRecord([FromBody] AppointmentDto dto)
+        public async Task<IActionResult> createAppointment([FromBody] AppointmentCreateDto dto)
         {
             if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await appointmentService.createAppointmentRecordAsync(dto);
-                return Ok(result);
-            }
+
+            var result = await appointmentService.createAppointmentAsync(dto);
+            return Ok(result);
         }
 
         [HttpGet]
         [Authorize(Roles = "Clinician,Patient")]
-        public async Task<IActionResult> getAllAppointmentRecords()
+        public async Task<IActionResult> getAllAppointments()
         {
-            var result = await appointmentService.getAllAppointmentRecordsAsync();
+            var result = await appointmentService.getAllAppointmentsAsync();
             return Ok(result);
         }
 
         [HttpGet("{appointmentId}")]
         [Authorize(Roles = "Clinician,Patient")]
-        public async Task<IActionResult> getAppointmentDetailsByAppointmentId(int appointmentId)
+        public async Task<IActionResult> getAppointmentById(int appointmentId)
         {
             if (appointmentId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidAppointmentId);
             }
-            else
-            {
-                var result = await appointmentService.getAppointmentDetailsByAppointmentIdAsync(appointmentId);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.AppointmentNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await appointmentService.getAppointmentByIdAsync(appointmentId);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.AppointmentNotFound);
             }
+
+            return Ok(result);
         }
 
         [HttpPut("{appointmentId}")]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> updateAppointmentDetailsByAppointmentId(int appointmentId, [FromBody] AppointmentDto dto)
+        public async Task<IActionResult> updateAppointment(int appointmentId, [FromBody] AppointmentCreateDto dto)
         {
             if (appointmentId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidAppointmentId);
             }
-            else if (dto == null)
+
+            if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await appointmentService.updateAppointmentDetailsByAppointmentIdAsync(appointmentId, dto);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.AppointmentNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await appointmentService.updateAppointmentAsync(appointmentId, dto);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.AppointmentNotFound);
             }
+
+            return Ok(result);
         }
 
         [HttpGet("filter")]
         [Authorize(Roles = "Clinician,Patient")]
-        public async Task<IActionResult> getFilteredAppointmentRecords([FromQuery] AppointmentQueryDto query)
+        public async Task<IActionResult> getFilteredAppointments([FromQuery] AppointmentQueryDto query)
         {
-            var result = await appointmentService.getFilteredAppointmentRecordsAsync(query);
+            var result = await appointmentService.getFilteredAppointmentsAsync(query);
             return Ok(result);
         }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeleCare.Data;
 
@@ -11,9 +12,11 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615070145_InitialFullRebuild2")]
+    partial class InitialFullRebuild2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,10 +55,6 @@ namespace TeleCare.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("AdhID");
-
-                    b.HasIndex("MedID");
-
-                    b.HasIndex("PatientID");
 
                     b.ToTable("AdherenceRecords");
                 });
@@ -96,10 +95,6 @@ namespace TeleCare.Migrations
 
                     b.HasKey("AlertID");
 
-                    b.HasIndex("PatientID");
-
-                    b.HasIndex("RuleID");
-
                     b.ToTable("Alerts");
                 });
 
@@ -139,10 +134,6 @@ namespace TeleCare.Migrations
 
                     b.HasKey("AppID");
 
-                    b.HasIndex("ClinicianID");
-
-                    b.HasIndex("PatientID");
-
                     b.ToTable("Appointments");
                 });
 
@@ -161,9 +152,6 @@ namespace TeleCare.Migrations
                     b.Property<string>("DetailsJSON")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PerformedByUserID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ResourceID")
                         .HasColumnType("int");
 
@@ -178,8 +166,6 @@ namespace TeleCare.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("AuditID");
-
-                    b.HasIndex("PerformedByUserID");
 
                     b.HasIndex("UserID");
 
@@ -221,8 +207,6 @@ namespace TeleCare.Migrations
 
                     b.HasKey("CarePlanID");
 
-                    b.HasIndex("PatientID");
-
                     b.ToTable("CarePlans");
                 });
 
@@ -243,9 +227,6 @@ namespace TeleCare.Migrations
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientUserID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -253,8 +234,6 @@ namespace TeleCare.Migrations
                     b.HasKey("ChargeID");
 
                     b.HasIndex("PatientID");
-
-                    b.HasIndex("PatientUserID");
 
                     b.ToTable("Charges");
                 });
@@ -276,13 +255,7 @@ namespace TeleCare.Migrations
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientUserID")
-                        .HasColumnType("int");
-
                     b.Property<int>("PayerID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PayerID1")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -296,11 +269,7 @@ namespace TeleCare.Migrations
 
                     b.HasIndex("PatientID");
 
-                    b.HasIndex("PatientUserID");
-
                     b.HasIndex("PayerID");
-
-                    b.HasIndex("PayerID1");
 
                     b.ToTable("Claims");
                 });
@@ -339,8 +308,6 @@ namespace TeleCare.Migrations
 
                     b.HasKey("DeviceID");
 
-                    b.HasIndex("AssignedToPatientID");
-
                     b.ToTable("Devices");
                 });
 
@@ -372,12 +339,6 @@ namespace TeleCare.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EnrollID");
-
-                    b.HasIndex("EnrolledBy");
-
-                    b.HasIndex("PatientID");
-
-                    b.HasIndex("ProgramID");
 
                     b.ToTable("Enrollments");
                 });
@@ -500,8 +461,6 @@ namespace TeleCare.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PatientID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Patients");
                 });
@@ -712,10 +671,6 @@ namespace TeleCare.Migrations
 
                     b.HasKey("TelemetryID");
 
-                    b.HasIndex("DeviceID");
-
-                    b.HasIndex("PatientID");
-
                     b.ToTable("TelemetryPoints");
                 });
 
@@ -761,17 +716,12 @@ namespace TeleCare.Migrations
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoleID1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UserID");
 
                     b.HasIndex("RoleID");
-
-                    b.HasIndex("RoleID1");
 
                     b.ToTable("Users");
                 });
@@ -810,12 +760,6 @@ namespace TeleCare.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("NoteID");
-
-                    b.HasIndex("AppID");
-
-                    b.HasIndex("ClinicianID");
-
-                    b.HasIndex("PatientID");
 
                     b.ToTable("VisitNotes");
                 });
@@ -865,65 +809,12 @@ namespace TeleCare.Migrations
 
                     b.HasKey("MedicationId");
 
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("PrescribedBy");
-
                     b.ToTable("Medications");
-                });
-
-            modelBuilder.Entity("TeleCare.Model.AdherenceRecordModel", b =>
-                {
-                    b.HasOne("TeleCare.Models.Medication", null)
-                        .WithMany()
-                        .HasForeignKey("MedID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeleCare.Model.Alert", b =>
-                {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.Rule", null)
-                        .WithMany()
-                        .HasForeignKey("RuleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeleCare.Model.Appointment", b =>
-                {
-                    b.HasOne("TeleCare.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("ClinicianID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TeleCare.Model.AuditLog", b =>
                 {
                     b.HasOne("TeleCare.Model.User", "PerformedBy")
-                        .WithMany()
-                        .HasForeignKey("PerformedByUserID");
-
-                    b.HasOne("TeleCare.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -932,27 +823,12 @@ namespace TeleCare.Migrations
                     b.Navigation("PerformedBy");
                 });
 
-            modelBuilder.Entity("TeleCare.Model.CarePlan", b =>
-                {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TeleCare.Model.Charge", b =>
                 {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
+                    b.HasOne("TeleCare.Model.User", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.User", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Patient");
@@ -960,60 +836,21 @@ namespace TeleCare.Migrations
 
             modelBuilder.Entity("TeleCare.Model.Claim", b =>
                 {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
+                    b.HasOne("TeleCare.Model.User", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientID")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.User", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.Payer", null)
-                        .WithMany()
-                        .HasForeignKey("PayerID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TeleCare.Model.Payer", "Payer")
                         .WithMany()
-                        .HasForeignKey("PayerID1");
+                        .HasForeignKey("PayerID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Patient");
 
                     b.Navigation("Payer");
-                });
-
-            modelBuilder.Entity("TeleCare.Model.DeviceModel", b =>
-                {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("AssignedToPatientID")
-                        .OnDelete(DeleteBehavior.SetNull);
-                });
-
-            modelBuilder.Entity("TeleCare.Model.EnrollmentModel", b =>
-                {
-                    b.HasOne("TeleCare.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("EnrolledBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.ProgramModel", null)
-                        .WithMany()
-                        .HasForeignKey("ProgramID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TeleCare.Model.Notification", b =>
@@ -1021,19 +858,10 @@ namespace TeleCare.Migrations
                     b.HasOne("TeleCare.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TeleCare.Model.PatientModel", b =>
-                {
-                    b.HasOne("TeleCare.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TeleCare.Model.Payment", b =>
@@ -1041,76 +869,21 @@ namespace TeleCare.Migrations
                     b.HasOne("TeleCare.Model.Claim", "Claim")
                         .WithMany()
                         .HasForeignKey("ClaimID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Claim");
                 });
 
-            modelBuilder.Entity("TeleCare.Model.TelemetryPointModel", b =>
-                {
-                    b.HasOne("TeleCare.Model.DeviceModel", null)
-                        .WithMany()
-                        .HasForeignKey("DeviceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TeleCare.Model.User", b =>
                 {
-                    b.HasOne("TeleCare.Model.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TeleCare.Model.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleID1");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("TeleCare.Model.VisitNote", b =>
-                {
-                    b.HasOne("TeleCare.Model.Appointment", null)
-                        .WithMany()
-                        .HasForeignKey("AppID")
+                        .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TeleCare.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("ClinicianID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TeleCare.Models.Medication", b =>
-                {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.User", null)
-                        .WithMany()
-                        .HasForeignKey("PrescribedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

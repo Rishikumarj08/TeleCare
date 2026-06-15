@@ -13,7 +13,6 @@ namespace TeleCare.Model
         public string? DetailsJSON { get; set; }
         public DateTime Timestamp { get; set; }
 
-        // Navigation property
         public User? PerformedBy { get; set; }
     }
 }

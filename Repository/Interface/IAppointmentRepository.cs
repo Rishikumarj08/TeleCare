@@ -5,15 +5,14 @@ namespace TeleCare.Repository.Interface
 {
     public interface IAppointmentRepository
     {
-        Task<Appointment?> createAppointmentRecordAsync(Appointment appointment);
+        Task<Appointment> createAppointmentAsync(Appointment appointment);
 
-        Task<List<Appointment>> getAllAppointmentRecordsAsync();
+        Task<List<Appointment>> getAllAppointmentsAsync();
 
-        Task<Appointment?> getAppointmentRecordByAppointmentIdAsync(int appointmentId);
+        Task<Appointment?> getAppointmentByIdAsync(int appointmentId);
 
-        Task<Appointment?> updateAppointmentRecordByAppointmentIdAsync(Appointment appointment);
+        Task<Appointment> updateAppointmentAsync(Appointment appointment);
 
-        Task<List<Appointment>> getFilteredAppointmentRecordsAsync(AppointmentQueryDto queryDto);
-
+        Task<List<Appointment>> getFilteredAppointmentsAsync(AppointmentQueryDto queryDto);
     }
 }

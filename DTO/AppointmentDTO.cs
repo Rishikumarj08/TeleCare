@@ -1,20 +1,57 @@
 using System.ComponentModel.DataAnnotations;
-using TeleCare.Enum;
 
 namespace TeleCare.DTO
 {
-    public class AppointmentDto
+    public class AppointmentCreateDto
     {
-        public int AppointmentId { get; set; }
+        [Required]
+        public int PatientID { get; set; }
 
-        public int PatientReferenceNumber { get; set; }
+        [Required]
+        public int ClinicianID { get; set; }
 
-        public DateTime AppointmentDateTime { get; set; }
+        [Required(ErrorMessage = "Scheduled time is required")]
+        public DateTime ScheduledAt { get; set; }
 
-        public required string AppointmentType { get; set; }
+        [Required]
+        public int DurationMinutes { get; set; }
 
-        public required string AppointmentMode { get; set; }
+        [Required(ErrorMessage = "Mode is required (Video/Phone/InPerson)")]
+        public string Mode { get; set; } = string.Empty;
 
-        public AppointmentStatusEnum AppointmentStatus { get; set; }
+        public string? LocationURI { get; set; }
+
+        [Required]
+        public string Status { get; set; } = string.Empty;
+    }
+
+    public class AppointmentResponseDto
+    {
+        public int AppID { get; set; }
+
+        public int PatientID { get; set; }
+
+        public int ClinicianID { get; set; }
+
+        public DateTime ScheduledAt { get; set; }
+
+        public int DurationMinutes { get; set; }
+
+        public string Mode { get; set; } = string.Empty;
+
+        public string? LocationURI { get; set; }
+
+        public string Status { get; set; } = string.Empty;
+
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class AppointmentQueryDto
+    {
+        public string? SearchText { get; set; }
+
+        public string? Status { get; set; }
+
+        public DateTime? ScheduledAt { get; set; }
     }
 }

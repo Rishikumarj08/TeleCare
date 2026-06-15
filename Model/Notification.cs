@@ -17,7 +17,6 @@ namespace TeleCare.Model
  
         public DateTime CreatedAt { get; set; }
  
-        // Navigation property
         public User? User { get; set; }
     }
 }

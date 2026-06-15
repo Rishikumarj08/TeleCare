@@ -15,53 +15,50 @@ namespace TeleCare.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<VisitNote?> createVisitNoteRecordAsync(VisitNote visitNote)
+        public async Task<VisitNote> createVisitNoteAsync(VisitNote visitNote)
         {
             await context.VisitNotes.AddAsync(visitNote);
             await context.SaveChangesAsync();
             return visitNote;
         }
 
-        public async Task<List<VisitNote>> getAllVisitNoteRecordsAsync()
+        public async Task<List<VisitNote>> getAllVisitNotesAsync()
         {
             return await context.VisitNotes.ToListAsync();
         }
 
-        public async Task<VisitNote?> getVisitNoteRecordByVisitNoteIdAsync(int visitNoteId)
+        public async Task<VisitNote?> getVisitNoteByIdAsync(int noteId)
         {
             return await context.VisitNotes
-                .FirstOrDefaultAsync(x => x.Id == visitNoteId);
+                .FirstOrDefaultAsync(x => x.NoteID == noteId);
         }
 
-        public async Task<VisitNote?> updateVisitNoteRecordByVisitNoteIdAsync(VisitNote visitNote)
+        public async Task<VisitNote> updateVisitNoteAsync(VisitNote visitNote)
         {
             context.VisitNotes.Update(visitNote);
             await context.SaveChangesAsync();
             return visitNote;
         }
 
-        public async Task<List<VisitNote>> getFilteredVisitNoteRecordsAsync(VisitNoteQueryDto queryDto)
+        public async Task<List<VisitNote>> getFilteredVisitNotesAsync(VisitNoteQueryDto queryDto)
         {
             var query = context.VisitNotes.AsQueryable();
 
-            // CONDITION 1: Search in Notes or Diagnosis
             if (!string.IsNullOrWhiteSpace(queryDto.SearchText))
             {
                 query = query.Where(x =>
-                    x.Notes.Contains(queryDto.SearchText) ||
-                    x.Diagnosis.Contains(queryDto.SearchText));
+                    x.NoteText.Contains(queryDto.SearchText) ||
+                    (x.DiagnosesJSON != null && x.DiagnosesJSON.Contains(queryDto.SearchText)));
             }
 
-            // CONDITION 2: Filter by PatientReferenceNumber
-            if (queryDto.PatientReferenceNumber.HasValue)
+            if (queryDto.PatientID.HasValue)
             {
-                query = query.Where(x => x.PatientReferenceNumber == queryDto.PatientReferenceNumber.Value);
+                query = query.Where(x => x.PatientID == queryDto.PatientID.Value);
             }
 
-            // CONDITION 3: Filter by Status
-            if (queryDto.VisitNoteStatus.HasValue)
+            if (queryDto.ClinicianID.HasValue)
             {
-                query = query.Where(x => x.VisitNoteStatus == queryDto.VisitNoteStatus.Value);
+                query = query.Where(x => x.ClinicianID == queryDto.ClinicianID.Value);
             }
 
             return await query.ToListAsync();

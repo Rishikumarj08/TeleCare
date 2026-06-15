@@ -7,7 +7,7 @@ namespace TeleCare.Data
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
- 
+
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Rule> Rules { get; set; }
@@ -18,16 +18,35 @@ namespace TeleCare.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<KPI> KPIs { get; set; }
- 
+
+        public DbSet<ProgramModel> Programs { get; set; }
+        public DbSet<PatientModel> Patients { get; set; }
+        public DbSet<EnrollmentModel> Enrollments { get; set; }
+        public DbSet<DeviceModel> Devices { get; set; }
+        public DbSet<TelemetryPointModel> TelemetryPoints { get; set; }
+        public DbSet<CarePlan> CarePlans { get; set; }
+        public DbSet<Medication> Medications { get; set; }
+        public DbSet<AdherenceRecordModel> AdherenceRecords { get; set; }
+
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<VisitNote> VisitNotes { get; set; }
+        public DbSet<Alert> Alerts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                 .HasKey(u => u.UserID);
-           
+
             modelBuilder.Entity<User>()
                 .Property(u => u.UserID)
                 .ValueGeneratedOnAdd();
- 
+
+            modelBuilder.Entity<User>()
+                .HasOne<Role>()
+                .WithMany()
+                .HasForeignKey(u => u.RoleID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Role>().HasData(
                 new Role { RoleID = 1, RoleName = "Patient" },
                 new Role { RoleID = 2, RoleName = "Clinician" },
@@ -36,63 +55,156 @@ namespace TeleCare.Data
                 new Role { RoleID = 5, RoleName = "Administrator" },
                 new Role { RoleID = 6, RoleName = "Auditor" }
             );
- 
-            // Claim → User (Patient)
-            modelBuilder.Entity<Claim>()
-                .HasOne(c => c.Patient)
+
+            modelBuilder.Entity<PatientModel>()
+                .HasOne<User>()
                 .WithMany()
-                .HasForeignKey(c => c.PatientID)
-                .OnDelete(DeleteBehavior.Restrict);
- 
-            // Claim → Payer
-            modelBuilder.Entity<Claim>()
-                .HasOne(c => c.Payer)
-                .WithMany()
-                .HasForeignKey(c => c.PayerID)
-                .OnDelete(DeleteBehavior.Restrict);
- 
-            // Payment → Claim
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.Claim)
-                .WithMany()
-                .HasForeignKey(p => p.ClaimID)
-                .OnDelete(DeleteBehavior.Restrict);
- 
-            // Charge → User (Patient)
-            modelBuilder.Entity<Charge>()
-                .HasOne(ch => ch.Patient)
-                .WithMany()
-                .HasForeignKey(ch => ch.PatientID)
-                .OnDelete(DeleteBehavior.Restrict);
- 
-            // AuditLog → User
-            modelBuilder.Entity<AuditLog>()
-                .HasOne(a => a.PerformedBy)
-                .WithMany()
-                .HasForeignKey(a => a.UserID)
+                .HasForeignKey(p => p.UserID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Notification → User
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany()
                 .HasForeignKey(n => n.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AuditLog>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(a => a.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EnrollmentModel>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(e => e.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<DeviceModel>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(d => d.AssignedToPatientID)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<TelemetryPointModel>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(t => t.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Alert>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(a => a.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(a => a.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VisitNote>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(v => v.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CarePlan>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(c => c.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Medication>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(m => m.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AdherenceRecordModel>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(a => a.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Charge>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(c => c.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Claim>()
+                .HasOne<PatientModel>()
+                .WithMany()
+                .HasForeignKey(c => c.PatientID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(a => a.ClinicianID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VisitNote>()
+                .HasOne<Appointment>()
+                .WithMany()
+                .HasForeignKey(v => v.AppID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<VisitNote>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(v => v.ClinicianID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Alert>()
+                .HasOne<Rule>()
+                .WithMany()
+                .HasForeignKey(a => a.RuleID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EnrollmentModel>()
+                .HasOne<ProgramModel>()
+                .WithMany()
+                .HasForeignKey(e => e.ProgramID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EnrollmentModel>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(e => e.EnrolledBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TelemetryPointModel>()
+                .HasOne<DeviceModel>()
+                .WithMany()
+                .HasForeignKey(t => t.DeviceID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Medication>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(m => m.PrescribedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AdherenceRecordModel>()
+                .HasOne<Medication>()
+                .WithMany()
+                .HasForeignKey(a => a.MedID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Claim>()
+                .HasOne<Payer>()
+                .WithMany()
+                .HasForeignKey(c => c.PayerID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Claim)
+                .WithMany()
+                .HasForeignKey(p => p.ClaimID)
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
-        public DbSet<ProgramModel> Programs { get; set; }
-        
-        public DbSet<Medication> Medications { get; set; }
-        public DbSet<CarePlan> CarePlans { get; set; }
-        
-        public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<VisitNote> VisitNotes { get; set; }
-        public DbSet<Alert> Alerts { get; set; }
-
-        public DbSet<PatientModel> Patients { get; set; }
-        public DbSet<EnrollmentModel> Enrollments { get; set; }
-        public DbSet<TelemetryPointModel> TelemetryPoints { get; set; }
-        public DbSet<AdherenceRecordModel> AdherenceRecords { get; set; }
-        public DbSet<DeviceModel> Devices { get; set; }
     }
 }

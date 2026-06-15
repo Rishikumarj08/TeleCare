@@ -2,7 +2,7 @@ namespace TeleCare.Constants
 {
     public static class AppConstants
     {
-        // General
+        
         public const string RecordCreated = "Record created successfully.";
         public const string RecordUpdated = "Record updated successfully.";
         public const string RecordDeleted = "Record deleted successfully.";

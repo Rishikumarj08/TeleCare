@@ -1,21 +1,55 @@
-using TeleCare.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace TeleCare.DTO
 {
-    public class VisitNoteDto
+    public class VisitNoteCreateDto
     {
-        public int VisitNoteId { get; set; }
+        [Required]
+        public int AppID { get; set; }
 
-        public int PatientReferenceNumber { get; set; }
+        [Required]
+        public int PatientID { get; set; }
 
-        public required string Notes { get; set; }
+        [Required]
+        public int ClinicianID { get; set; }
 
-        public required string Diagnosis { get; set; }
+        [Required(ErrorMessage = "Note text is required")]
+        public string NoteText { get; set; }
 
-        public required string Orders { get; set; }
+        public string? DiagnosesJSON { get; set; }
 
-        public required string AttachmentName { get; set; }
+        public string? OrdersJSON { get; set; }
 
-        public VisitNoteStatusEnum VisitNoteStatus { get; set; }
+        public string? AttachmentsURIJSON { get; set; }
+    }
+
+    public class VisitNoteResponseDto
+    {
+        public int NoteID { get; set; }
+
+        public int AppID { get; set; }
+
+        public int PatientID { get; set; }
+
+        public int ClinicianID { get; set; }
+
+        public string NoteText { get; set; }
+
+        public string? DiagnosesJSON { get; set; }
+
+        public string? OrdersJSON { get; set; }
+
+        public string? AttachmentsURIJSON { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class VisitNoteQueryDto
+    {
+        public int? PatientID { get; set; }
+
+        public int? ClinicianID { get; set; }
+
+        public string? SearchText { get; set; }
     }
 }

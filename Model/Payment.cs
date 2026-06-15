@@ -17,8 +17,7 @@ namespace TeleCare.Model
  
         public required string Status { get; set; }
  
-        // Navigation properties
-        public Claim? Claim { get; set; }
+        public Claim? Claim { get; set; } 
     }
 }
  

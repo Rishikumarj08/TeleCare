@@ -17,92 +17,88 @@ namespace TeleCare.Service.Implementation
             _auditLogService = auditLogService;
         }
 
-        public async Task<AlertDto?> createAlertRecordAsync(AlertDto dto)
+        public async Task<AlertResponseDto> createAlertAsync(AlertCreateDto dto)
         {
             var entity = new Alert
             {
-                PatientReferenceNumber = dto.PatientReferenceNumber,
-                AlertType = dto.AlertType,
-                AlertSeverity = dto.AlertSeverity,
-                Message = dto.Message,
-                AlertStatus = dto.AlertStatus,
-                CreatedOn = DateTime.Now
+                PatientID = dto.PatientID,
+                RuleID = dto.RuleID,
+                TriggeredAt = dto.TriggeredAt,
+                Severity = dto.Severity,
+                AssignedToFK = dto.AssignedToFK,
+                AcknowledgedAt = dto.AcknowledgedAt,
+                ResolvedAt = dto.ResolvedAt,
+                Status = dto.Status
             };
 
             Validate(entity);
 
-            var result = await repository.createAlertRecordAsync(entity);
-            if (result != null)
-            {
-                dto.AlertId = result.Id;
-            }
+            var result = await repository.createAlertAsync(entity);
 
-            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "Alert", result?.Id,
-                $"Alert '{dto.AlertType}' created for patient '{dto.PatientReferenceNumber}'. Severity: '{dto.AlertSeverity}'.");
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "Alert", result.AlertID,
+                $"Alert created with Severity: '{dto.Severity}', Status: '{dto.Status}'.");
 
-            return dto;
+            return MapToResponseDto(result);
         }
 
-        public async Task<List<AlertDto>> getAllAlertRecordsAsync()
+        public async Task<List<AlertResponseDto>> getAllAlertsAsync()
         {
-            var data = await repository.getAllAlertRecordsAsync();
+            var data = await repository.getAllAlertsAsync();
 
-            return data.Select(x => new AlertDto
-            {
-                AlertId = x.Id,
-                PatientReferenceNumber = x.PatientReferenceNumber,
-                AlertType = x.AlertType,
-                AlertSeverity = x.AlertSeverity,
-                Message = x.Message,
-                AlertStatus = x.AlertStatus
-            }).ToList();
+            return data.Select(x => MapToResponseDto(x)).ToList();
         }
 
-        public async Task<AlertDto?> getAlertDetailsByAlertIdAsync(int id)
+        public async Task<AlertResponseDto?> getAlertByIdAsync(int alertId)
         {
-            var entity = await repository.getAlertRecordByAlertIdAsync(id);
-
-            return entity == null ? null : new AlertDto
-            {
-                AlertId = entity.Id,
-                PatientReferenceNumber = entity.PatientReferenceNumber,
-                AlertType = entity.AlertType,
-                AlertSeverity = entity.AlertSeverity,
-                Message = entity.Message,
-                AlertStatus = entity.AlertStatus
-            };
-        }
-
-        public async Task<AlertDto?> updateAlertDetailsByAlertIdAsync(int id, AlertDto dto)
-        {
-            var entity = await repository.getAlertRecordByAlertIdAsync(id);
+            var entity = await repository.getAlertByIdAsync(alertId);
 
             if (entity == null) return null;
 
-            entity.AlertType = dto.AlertType;
-            entity.AlertSeverity = dto.AlertSeverity;
-            entity.Message = dto.Message;
-            entity.AlertStatus = dto.AlertStatus;
+            return MapToResponseDto(entity);
+        }
+
+        public async Task<AlertResponseDto?> updateAlertAsync(int alertId, AlertCreateDto dto)
+        {
+            var entity = await repository.getAlertByIdAsync(alertId);
+
+            if (entity == null) return null;
+
+            entity.PatientID = dto.PatientID;
+            entity.RuleID = dto.RuleID;
+            entity.TriggeredAt = dto.TriggeredAt;
+            entity.Severity = dto.Severity;
+            entity.AssignedToFK = dto.AssignedToFK;
+            entity.AcknowledgedAt = dto.AcknowledgedAt;
+            entity.ResolvedAt = dto.ResolvedAt;
+            entity.Status = dto.Status;
 
             Validate(entity);
 
-            var updated = await repository.updateAlertRecordByAlertIdAsync(entity);
-            if (updated == null) return null;
+            var updated = await repository.updateAlertAsync(entity);
 
-            await _auditLogService.LogAsync(updated.PatientReferenceNumber, "UPDATE", "Alert", id,
-                $"Alert '{id}' updated. Status: '{dto.AlertStatus}'.");
+            await _auditLogService.LogAsync(entity.PatientID, "UPDATE", "Alert", alertId,
+                $"Alert '{alertId}' updated. Status: '{dto.Status}'.");
 
-            return new AlertDto
+            return MapToResponseDto(updated);
+        }
+
+        private static AlertResponseDto MapToResponseDto(Alert entity)
+        {
+            return new AlertResponseDto
             {
-                AlertId = updated.Id,
-                PatientReferenceNumber = updated.PatientReferenceNumber,
-                AlertType = updated.AlertType,
-                AlertSeverity = updated.AlertSeverity,
-                Message = updated.Message,
-                AlertStatus = updated.AlertStatus
+                AlertID = entity.AlertID,
+                PatientID = entity.PatientID,
+                RuleID = entity.RuleID,
+                TriggeredAt = entity.TriggeredAt,
+                Severity = entity.Severity,
+                AssignedToFK = entity.AssignedToFK,
+                AcknowledgedAt = entity.AcknowledgedAt,
+                ResolvedAt = entity.ResolvedAt,
+                Status = entity.Status
             };
         }
 
+        
         private void Validate(Alert entity)
         {
             var context = new ValidationContext(entity);

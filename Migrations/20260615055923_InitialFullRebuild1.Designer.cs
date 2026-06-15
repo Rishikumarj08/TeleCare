@@ -12,8 +12,8 @@ using TeleCare.Data;
 namespace TeleCare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260602120357_InitialFullRebuild")]
-    partial class InitialFullRebuild
+    [Migration("20260615055923_InitialFullRebuild1")]
+    partial class InitialFullRebuild1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,33 +61,39 @@ namespace TeleCare.Migrations
 
             modelBuilder.Entity("TeleCare.Model.Alert", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AlertID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertID"));
 
-                    b.Property<int>("AlertSeverity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AlertStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AlertType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("AcknowledgedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Message")
+                    b.Property<int>("AssignedToFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RuleID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Severity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientReferenceNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("TriggeredAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AlertID");
 
                     b.ToTable("Alerts");
                 });

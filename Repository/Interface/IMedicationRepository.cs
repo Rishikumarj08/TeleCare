@@ -9,7 +9,6 @@ namespace TeleCare.Repository.Interface
         Task<Medication?> GetMedicationByIdAsync(int medicationId);
         Task<Medication?> UpdateMedicationAsync(int medicationId, Medication medication);
 
-        //  Updated for search
         Task<List<Medication>> GetAllMedicationsAsync(MedicationSearchDto searchDto);
     }
 }

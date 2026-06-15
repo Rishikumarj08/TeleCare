@@ -7,49 +7,37 @@ using Microsoft.Extensions.Logging;
 
 namespace TeleCare.Exceptions
 {
-    /// <summary>
-    /// Custom exception for bad requests (400)
-    /// </summary>
+  
     public class BadRequestException : Exception
     {
         public BadRequestException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Custom exception for not found errors (404)
-    /// </summary>
+    
     public class NotFoundException : Exception
     {
         public NotFoundException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Custom exception for unauthorized errors (401)
-    /// </summary>
+    
     public class UnauthorizedException : Exception
     {
         public UnauthorizedException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Custom exception for forbidden access errors (403)
-    /// </summary>
+    
     public class ForbiddenException : Exception
     {
         public ForbiddenException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Custom exception for conflict errors (409) e.g. duplicate entries
-    /// </summary>
+   
     public class ConflictException : Exception
     {
         public ConflictException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Global exception handling middleware
-    /// </summary>
+    
     public class GlobalExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -130,9 +118,7 @@ namespace TeleCare.Exceptions
         }
     }
 
-    /// <summary>
-    /// Standard error response format for all API errors.
-    /// </summary>
+   
     public class ErrorResponse
     {
         public int Status { get; set; }

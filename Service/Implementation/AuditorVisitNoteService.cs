@@ -18,21 +18,20 @@ namespace TeleCare.Service.Implementation
 
         public async Task<List<AuditorVisitNoteResponseDto>> GetAllVisitNotesAsync()
         {
-            // Join VisitNotes with Patients on PatientReferenceNumber = PatientID
             var result = await _context.VisitNotes
                 .Join(
                     _context.Patients,
-                    v => v.PatientReferenceNumber,
+                    v => v.PatientID,
                     p => p.PatientID,
                     (v, p) => new AuditorVisitNoteResponseDto
                     {
                         PatientName = p.Name,
-                        Notes = v.Notes,
-                        Diagnosis = v.Diagnosis,
-                        Orders = v.Orders,
-                        AttachmentName = v.AttachmentName,
-                        VisitNoteStatus = v.VisitNoteStatus.ToString(),
-                        CreatedOn = v.CreatedOn
+                        Notes = v.NoteText ?? string.Empty,
+                        Diagnosis = v.DiagnosesJSON ?? string.Empty,
+                        Orders = v.OrdersJSON ?? string.Empty,
+                        AttachmentName = v.AttachmentsURIJSON ?? string.Empty,
+                        VisitNoteStatus = string.Empty,
+                        CreatedOn = v.CreatedAt
                     }
                 )
                 .OrderByDescending(v => v.CreatedOn)
@@ -46,11 +45,10 @@ namespace TeleCare.Service.Implementation
 
         public async Task<List<AuditorVisitNoteResponseDto>> SearchVisitNotesAsync(SearchVisitNoteDto searchDto)
         {
-            // Join VisitNotes with Patients on PatientReferenceNumber = PatientID
             var query = _context.VisitNotes
                 .Join(
                     _context.Patients,
-                    v => v.PatientReferenceNumber,
+                    v => v.PatientID,
                     p => p.PatientID,
                     (v, p) => new
                     {
@@ -60,30 +58,26 @@ namespace TeleCare.Service.Implementation
                 )
                 .AsQueryable();
 
-            // Filter by PatientName
             if (!string.IsNullOrWhiteSpace(searchDto.PatientName))
                 query = query.Where(x => x.PatientName.Contains(searchDto.PatientName));
 
-            // Filter by Status
-            if (!string.IsNullOrWhiteSpace(searchDto.VisitNoteStatus))
-                query = query.Where(x => x.VisitNote.VisitNoteStatus.ToString().ToLower() == searchDto.VisitNoteStatus.Trim().ToLower());
+            // VisitNoteStatus is not present on the VisitNote model; skip status filtering.
 
-            // Free text search in Notes and Diagnosis
             if (!string.IsNullOrWhiteSpace(searchDto.SearchText))
                 query = query.Where(x =>
-                    x.VisitNote.Notes.Contains(searchDto.SearchText) ||
-                    x.VisitNote.Diagnosis.Contains(searchDto.SearchText));
+                    (x.VisitNote.NoteText ?? string.Empty).Contains(searchDto.SearchText) ||
+                    (x.VisitNote.DiagnosesJSON ?? string.Empty).Contains(searchDto.SearchText));
 
             var result = await query
                 .Select(x => new AuditorVisitNoteResponseDto
                 {
                     PatientName = x.PatientName,
-                    Notes = x.VisitNote.Notes,
-                    Diagnosis = x.VisitNote.Diagnosis,
-                    Orders = x.VisitNote.Orders,
-                    AttachmentName = x.VisitNote.AttachmentName,
-                    VisitNoteStatus = x.VisitNote.VisitNoteStatus.ToString(),
-                    CreatedOn = x.VisitNote.CreatedOn
+                    Notes = x.VisitNote.NoteText ?? string.Empty,
+                    Diagnosis = x.VisitNote.DiagnosesJSON ?? string.Empty,
+                    Orders = x.VisitNote.OrdersJSON ?? string.Empty,
+                    AttachmentName = x.VisitNote.AttachmentsURIJSON ?? string.Empty,
+                    VisitNoteStatus = string.Empty,
+                    CreatedOn = x.VisitNote.CreatedAt
                 })
                 .OrderByDescending(v => v.CreatedOn)
                 .ToListAsync();

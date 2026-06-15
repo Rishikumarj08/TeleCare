@@ -17,105 +17,91 @@ namespace TeleCare.Service.Implementation
             _auditLogService = auditLogService;
         }
 
-        public async Task<AppointmentDto?> createAppointmentRecordAsync(AppointmentDto dto)
+        public async Task<AppointmentResponseDto> createAppointmentAsync(AppointmentCreateDto dto)
         {
             var entity = new Appointment
             {
-                PatientReferenceNumber = dto.PatientReferenceNumber,
-                AppointmentDateTime = dto.AppointmentDateTime,
-                AppointmentType = dto.AppointmentType,
-                AppointmentMode = dto.AppointmentMode,
-                AppointmentStatus = dto.AppointmentStatus,
-                CreatedOn = DateTime.Now
+                PatientID = dto.PatientID,
+                ClinicianID = dto.ClinicianID,
+                ScheduledAt = dto.ScheduledAt,
+                DurationMinutes = dto.DurationMinutes,
+                Mode = dto.Mode,
+                LocationURI = dto.LocationURI,
+                Status = dto.Status,
+                CreatedAt = DateTime.UtcNow
             };
 
             Validate(entity);
 
-            var result = await repository.createAppointmentRecordAsync(entity);
-            if (result != null)
-            {
-                dto.AppointmentId = result.Id;
-            }
+            var result = await repository.createAppointmentAsync(entity);
 
-            await _auditLogService.LogAsync(entity.PatientReferenceNumber, "CREATE", "Appointment", result?.Id,
-                $"Appointment created for patient '{dto.PatientReferenceNumber}' on '{dto.AppointmentDateTime:yyyy-MM-dd}'.");
+            await _auditLogService.LogAsync(entity.PatientID, "CREATE", "Appointment", result.AppID,
+                $"Appointment created for Patient '{dto.PatientID}' at '{dto.ScheduledAt}'.");
 
-            return dto;
+            return MapToResponseDto(result);
         }
 
-        public async Task<List<AppointmentDto>> getAllAppointmentRecordsAsync()
+        public async Task<List<AppointmentResponseDto>> getAllAppointmentsAsync()
         {
-            var data = await repository.getAllAppointmentRecordsAsync();
+            var data = await repository.getAllAppointmentsAsync();
 
-            return data.Select(x => new AppointmentDto
-            {
-                AppointmentId = x.Id,
-                PatientReferenceNumber = x.PatientReferenceNumber,
-                AppointmentDateTime = x.AppointmentDateTime,
-                AppointmentType = x.AppointmentType,
-                AppointmentMode = x.AppointmentMode,
-                AppointmentStatus = x.AppointmentStatus
-            }).ToList();
+            return data.Select(x => MapToResponseDto(x)).ToList();
         }
 
-        public async Task<AppointmentDto?> getAppointmentDetailsByAppointmentIdAsync(int id)
+        public async Task<AppointmentResponseDto?> getAppointmentByIdAsync(int appointmentId)
         {
-            var entity = await repository.getAppointmentRecordByAppointmentIdAsync(id);
-
-            return entity == null ? null : new AppointmentDto
-            {
-                AppointmentId = entity.Id,
-                PatientReferenceNumber = entity.PatientReferenceNumber,
-                AppointmentDateTime = entity.AppointmentDateTime,
-                AppointmentType = entity.AppointmentType,
-                AppointmentMode = entity.AppointmentMode,
-                AppointmentStatus = entity.AppointmentStatus
-            };
-        }
-
-        public async Task<AppointmentDto?> updateAppointmentDetailsByAppointmentIdAsync(int id, AppointmentDto dto)
-        {
-            var entity = await repository.getAppointmentRecordByAppointmentIdAsync(id);
+            var entity = await repository.getAppointmentByIdAsync(appointmentId);
 
             if (entity == null) return null;
 
-            entity.AppointmentDateTime = dto.AppointmentDateTime;
-            entity.AppointmentType = dto.AppointmentType;
-            entity.AppointmentMode = dto.AppointmentMode;
-            entity.AppointmentStatus = dto.AppointmentStatus;
+            return MapToResponseDto(entity);
+        }
+
+        public async Task<AppointmentResponseDto?> updateAppointmentAsync(int appointmentId, AppointmentCreateDto dto)
+        {
+            var entity = await repository.getAppointmentByIdAsync(appointmentId);
+
+            if (entity == null) return null;
+
+            entity.PatientID = dto.PatientID;
+            entity.ClinicianID = dto.ClinicianID;
+            entity.ScheduledAt = dto.ScheduledAt;
+            entity.DurationMinutes = dto.DurationMinutes;
+            entity.Mode = dto.Mode;
+            entity.LocationURI = dto.LocationURI;
+            entity.Status = dto.Status;
 
             Validate(entity);
 
-            var updated = await repository.updateAppointmentRecordByAppointmentIdAsync(entity);
-            if (updated == null) return null;
+            var updated = await repository.updateAppointmentAsync(entity);
 
-            await _auditLogService.LogAsync(updated.PatientReferenceNumber, "UPDATE", "Appointment", id,
-                $"Appointment '{id}' updated. Status: '{dto.AppointmentStatus}'.");
+            await _auditLogService.LogAsync(entity.PatientID, "UPDATE", "Appointment", appointmentId,
+                $"Appointment '{appointmentId}' updated. Status: '{dto.Status}'.");
 
-            return new AppointmentDto
-            {
-                AppointmentId = updated.Id,
-                PatientReferenceNumber = updated.PatientReferenceNumber,
-                AppointmentDateTime = updated.AppointmentDateTime,
-                AppointmentType = updated.AppointmentType,
-                AppointmentMode = updated.AppointmentMode,
-                AppointmentStatus = updated.AppointmentStatus
-            };
+            return MapToResponseDto(updated);
         }
 
-        public async Task<List<AppointmentDto>> getFilteredAppointmentRecordsAsync(AppointmentQueryDto query)
+        public async Task<List<AppointmentResponseDto>> getFilteredAppointmentsAsync(AppointmentQueryDto query)
         {
-            var data = await repository.getFilteredAppointmentRecordsAsync(query);
+            var data = await repository.getFilteredAppointmentsAsync(query);
 
-            return data.Select(x => new AppointmentDto
+            return data.Select(x => MapToResponseDto(x)).ToList();
+        }
+
+        private static AppointmentResponseDto MapToResponseDto(Appointment entity)
+        {
+            return new AppointmentResponseDto
             {
-                AppointmentId = x.Id,
-                PatientReferenceNumber = x.PatientReferenceNumber,
-                AppointmentDateTime = x.AppointmentDateTime,
-                AppointmentType = x.AppointmentType,
-                AppointmentMode = x.AppointmentMode,
-                AppointmentStatus = x.AppointmentStatus
-            }).ToList();
+                AppID = entity.AppID,
+                PatientID = entity.PatientID,
+                ClinicianID = entity.ClinicianID,
+                ScheduledAt = entity.ScheduledAt,
+                DurationMinutes = entity.DurationMinutes,
+                Mode = entity.Mode,
+                LocationURI = entity.LocationURI,
+                Status = entity.Status,
+                CreatedAt = entity.CreatedAt
+            };
         }
 
         private void Validate(Appointment entity)

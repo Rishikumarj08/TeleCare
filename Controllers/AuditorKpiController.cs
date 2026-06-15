@@ -18,9 +18,7 @@ public class AuditorKpiController : ControllerBase
         _kpiService = kpiService;
     }
 
-    /// <summary>
-    /// Get all KPIs with auto-calculated CurrentValue and PerformanceIndicator
-    /// </summary>
+   
     [HttpGet]
     public async Task<IActionResult> GetAllKpis()
     {
@@ -28,9 +26,7 @@ public class AuditorKpiController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>
-    /// Search KPIs by Name, ReportingPeriod, PerformanceIndicator (any one is sufficient)
-    /// </summary>
+   
     [HttpPost("search")]
     public async Task<IActionResult> SearchKpis([FromBody] SearchKpiDto searchDto)
     {

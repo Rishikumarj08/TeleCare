@@ -4,12 +4,12 @@ namespace TeleCare.Service.Interface
 {
     public interface IAlertService
     {
-        Task<AlertDto?> createAlertRecordAsync(AlertDto alertDto);
+        Task<AlertResponseDto> createAlertAsync(AlertCreateDto dto);
 
-        Task<List<AlertDto>> getAllAlertRecordsAsync();
+        Task<List<AlertResponseDto>> getAllAlertsAsync();
 
-        Task<AlertDto?> getAlertDetailsByAlertIdAsync(int alertId);
+        Task<AlertResponseDto?> getAlertByIdAsync(int alertId);
 
-        Task<AlertDto?> updateAlertDetailsByAlertIdAsync(int alertId, AlertDto alertDto);
+        Task<AlertResponseDto?> updateAlertAsync(int alertId, AlertCreateDto dto);
     }
 }

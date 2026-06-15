@@ -8,11 +8,11 @@ namespace TeleCare.DTO
     {
         [Required]
         [StringLength(100, MinimumLength = 2)]
-        public string ProgramName { get; set; }
+        public string ProgramName { get; set; } = string.Empty;
 
         [Required]
         [StringLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required]
         public ProgramStatus Status { get; set; }
@@ -24,10 +24,10 @@ namespace TeleCare.DTO
         public int ProgramID { get; set; }
 
         [StringLength(100, MinimumLength = 2)]
-        public string ProgramName { get; set; }
+        public string ProgramName { get; set; } = string.Empty;
 
         [StringLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required]
         public ProgramStatus Status { get; set; }
@@ -36,9 +36,9 @@ namespace TeleCare.DTO
     public class ProgramResponseDTO
     {
         public int ProgramID { get; set; }
-        public string ProgramName { get; set; }
-        public string Description { get; set; }
-        public string Status { get; set; }
+        public string ProgramName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
 

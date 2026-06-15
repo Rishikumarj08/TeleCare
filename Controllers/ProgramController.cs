@@ -17,7 +17,6 @@ namespace TeleCare.Controllers
             _programService = programService;
         }
 
-        //  CREATE PROGRAM
         [HttpPost]
         [Authorize(Roles = "Care Coordinator")]
         public async Task<IActionResult> CreateProgram([FromBody] ProgramCreateDTO dto)
@@ -37,7 +36,6 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        //  GET ALL WITH SEARCH
         [HttpGet]
         [Authorize(Roles = "Patient,Care Coordinator")]
         public async Task<IActionResult> GetAllPrograms([FromQuery] ProgramSearchDTO searchDTO)
@@ -52,7 +50,6 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        // GET BY ID
         [HttpGet("{programId}")]
         [Authorize(Roles = "Patient,Care Coordinator")]
         public async Task<IActionResult> GetProgramById(int programId)
@@ -72,7 +69,6 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        // UPDATE PROGRAM
         [HttpPut("{programId}")]
         [Authorize(Roles = "Care Coordinator")]
         public async Task<IActionResult> UpdateProgram(int programId, [FromBody] ProgramUpdateDTO dto)
@@ -92,7 +88,6 @@ namespace TeleCare.Controllers
             return Ok(result);
         }
 
-        // DELETE PROGRAM (Optional but recommended)
         [HttpDelete("{programId}")]
         [Authorize(Roles = "Care Coordinator")]
         public async Task<IActionResult> DeleteProgram(int programId)
@@ -109,7 +104,6 @@ namespace TeleCare.Controllers
                 return NotFound(ProgramConstants.ProgramNotFound);
             }
 
-            // You can implement delete in service if needed
             return Ok(new { message = "Program deleted successfully (implement service logic)" });
         }
     }

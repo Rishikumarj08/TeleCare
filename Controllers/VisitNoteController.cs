@@ -19,82 +19,73 @@ namespace TeleCare.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> createVisitNoteRecord([FromBody] VisitNoteDto dto)
+        public async Task<IActionResult> createVisitNote([FromBody] VisitNoteCreateDto dto)
         {
             if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await visitNoteService.createVisitNoteRecordAsync(dto);
-                return Ok(result);
-            }
+
+            var result = await visitNoteService.createVisitNoteAsync(dto);
+            return Ok(result);
         }
 
         [HttpGet]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> getAllVisitNoteRecords()
+        public async Task<IActionResult> getAllVisitNotes()
         {
-            var result = await visitNoteService.getAllVisitNoteRecordsAsync();
+            var result = await visitNoteService.getAllVisitNotesAsync();
             return Ok(result);
         }
 
         [HttpGet("{visitNoteId}")]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> getVisitNoteDetailsByVisitNoteId(int visitNoteId)
+        public async Task<IActionResult> getVisitNoteById(int visitNoteId)
         {
             if (visitNoteId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidVisitNoteId);
             }
-            else
-            {
-                var result = await visitNoteService.getVisitNoteDetailsByVisitNoteIdAsync(visitNoteId);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.VisitNoteNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await visitNoteService.getVisitNoteByIdAsync(visitNoteId);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.VisitNoteNotFound);
             }
+
+            return Ok(result);
         }
 
         [HttpPut("{visitNoteId}")]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> updateVisitNoteDetailsByVisitNoteId(int visitNoteId, [FromBody] VisitNoteDto dto)
+        public async Task<IActionResult> updateVisitNote(int visitNoteId, [FromBody] VisitNoteCreateDto dto)
         {
             if (visitNoteId <= 0)
             {
                 return BadRequest(ApplicationMessages.InvalidVisitNoteId);
             }
-            else if (dto == null)
+
+            if (dto == null)
             {
                 return BadRequest(ApplicationMessages.RequestBodyNull);
             }
-            else
-            {
-                var result = await visitNoteService.updateVisitNoteDetailsByVisitNoteIdAsync(visitNoteId, dto);
 
-                if (result == null)
-                {
-                    return NotFound(ApplicationMessages.VisitNoteNotFound);
-                }
-                else
-                {
-                    return Ok(result);
-                }
+            var result = await visitNoteService.updateVisitNoteAsync(visitNoteId, dto);
+
+            if (result == null)
+            {
+                return NotFound(ApplicationMessages.VisitNoteNotFound);
             }
+
+            return Ok(result);
         }
 
         [HttpGet("filter")]
         [Authorize(Roles = "Clinician")]
-        public async Task<IActionResult> getFilteredVisitNoteRecords([FromQuery] VisitNoteQueryDto query)
+        public async Task<IActionResult> getFilteredVisitNotes([FromQuery] VisitNoteQueryDto query)
         {
-            var result = await visitNoteService.getFilteredVisitNoteRecordsAsync(query);
+            var result = await visitNoteService.getFilteredVisitNotesAsync(query);
             return Ok(result);
         }
     }
