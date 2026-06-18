@@ -18,7 +18,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Care Coordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> CreateProgram([FromBody] ProgramCreateDTO dto)
         {
             if (!ModelState.IsValid || dto == null)
@@ -37,7 +37,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Patient,Care Coordinator")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetAllPrograms([FromQuery] ProgramSearchDTO searchDTO)
         {
             if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{programId}")]
-        [Authorize(Roles = "Patient,Care Coordinator")]
+        [Authorize(Roles = "Patient,CareCoordinator")]
         public async Task<IActionResult> GetProgramById(int programId)
         {
             if (programId <= 0)
@@ -70,7 +70,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpPut("{programId}")]
-        [Authorize(Roles = "Care Coordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> UpdateProgram(int programId, [FromBody] ProgramUpdateDTO dto)
         {
             if (!ModelState.IsValid || dto == null || programId != dto.ProgramID)
@@ -89,7 +89,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpDelete("{programId}")]
-        [Authorize(Roles = "Care Coordinator")]
+        [Authorize(Roles = "CareCoordinator")]
         public async Task<IActionResult> DeleteProgram(int programId)
         {
             if (programId <= 0)

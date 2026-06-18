@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using TeleCare.DTO;
 using TeleCare.Model;
 using TeleCare.Repository.Interface;
@@ -9,12 +10,17 @@ namespace TeleCare.Service.Implementation
     {
         private readonly IProgramRepository _repository;
         private readonly IAuditLogService _auditLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ProgramService(IProgramRepository repository, IAuditLogService auditLogService)
+        public ProgramService(IProgramRepository repository, IAuditLogService auditLogService, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _auditLogService = auditLogService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetCurrentUserId() =>
+            int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         public async Task<List<ProgramResponseDTO>> GetAllProgramsAsync(ProgramSearchDTO searchDTO)
         {
@@ -58,7 +64,7 @@ namespace TeleCare.Service.Implementation
             };
 
             await _repository.AddProgramAsync(entity);
-            await _auditLogService.LogAsync(0, "CREATE", "Program", entity.ProgramID,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "CREATE", "Program", entity.ProgramID,
                 $"Program '{entity.ProgramName}' created.");
 
             return new ProgramResponseDTO
@@ -86,7 +92,7 @@ namespace TeleCare.Service.Implementation
             entity.Status = dto.Status;
 
             await _repository.UpdateProgramAsync(entity);
-            await _auditLogService.LogAsync(0, "UPDATE", "Program", entity.ProgramID,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "UPDATE", "Program", entity.ProgramID,
                 $"Program '{entity.ProgramName}' updated. Status: '{dto.Status}'.");
 
             return new ProgramResponseDTO

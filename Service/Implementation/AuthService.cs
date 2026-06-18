@@ -137,12 +137,13 @@ public class AuthService : IAuthService
         var issuer = _configuration["Jwt:Issuer"] ?? "TeleCareApi";
         var audience = _configuration["Jwt:Audience"] ?? "TeleCareClient";
         var expiryMinutes = int.TryParse(_configuration["Jwt:TokenExpiryMinutes"], out var minutes) ? minutes : 60;
-
+        var roleName = System.Enum.GetName(typeof(RoleEnum), user.RoleID) ?? string.Empty;
         var claims = new List<System.Security.Claims.Claim>
         {
             new System.Security.Claims.Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
             new System.Security.Claims.Claim(ClaimTypes.Email, user.Email),
-            new System.Security.Claims.Claim(ClaimTypes.Role, user.Role?.RoleName ?? user.RoleID.ToString()),
+            new System.Security.Claims.Claim(ClaimTypes.Role, roleName),
+            new System.Security.Claims.Claim("role", roleName),
             new System.Security.Claims.Claim("name", user.Name)
         };
 

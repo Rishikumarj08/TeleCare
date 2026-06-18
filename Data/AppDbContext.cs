@@ -128,18 +128,6 @@ namespace TeleCare.Data
                 .HasForeignKey(a => a.PatientID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Charge>()
-                .HasOne<PatientModel>()
-                .WithMany()
-                .HasForeignKey(c => c.PatientID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Claim>()
-                .HasOne<PatientModel>()
-                .WithMany()
-                .HasForeignKey(c => c.PatientID)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Appointment>()
                 .HasOne<User>()
                 .WithMany()

@@ -53,6 +53,9 @@ namespace TeleCare.Dto
         public DateTime StartAt { get; set; }
         public DateTime? EndAt { get; set; }
 
+        // The user id of the clinician who prescribed this medication
+        public int PrescribedBy { get; set; }
+
         public MedicationStatus Status { get; set; }
         public string StatusLabel { get; set; } = string.Empty;
     }

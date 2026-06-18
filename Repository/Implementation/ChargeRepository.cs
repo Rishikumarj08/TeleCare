@@ -42,7 +42,7 @@ namespace TeleCare.Repository.Implementation
                 query = query.Where(c => c.Patient != null && c.Patient.Name.Contains(searchDto.PatientName));
  
             if (searchDto.Date.HasValue)
-                query = query.Where(c => c.Date.Date == searchDto.Date.Value.Date);
+                query = query.Where(c => c.Date.Date == searchDto.Date.Value.ToUniversalTime().Date);
  
             if (!string.IsNullOrWhiteSpace(searchDto.Status))
                 query = query.Where(c => c.Status.ToLower() == searchDto.Status.Trim().ToLower());

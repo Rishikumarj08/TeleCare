@@ -8,6 +8,7 @@ namespace TeleCare.Service.Implementation
 {
     public class CarePlanService : ICarePlanService
     {
+        
         private readonly ICarePlanRepository _repository;
         private readonly IAuditLogService _auditLogService;
 
@@ -77,6 +78,43 @@ namespace TeleCare.Service.Implementation
                 EndDate = entity.EndDate
             };
         }
+//         public async Task<CarePlanResponseDTO?> CreateCarePlanAsync(CarePlanCreateDTO dto)
+// {
+//     if (dto.EndDate.HasValue && dto.EndDate < dto.StartDate)
+//         throw new Exception("EndDate cannot be less than StartDate");
+
+//     // ✅ Validate Patient exists
+//     var patientExists = await _repository.GetCarePlanByIdAsync(dto.PatientID) != null; // Replace with actual patient check
+
+//     if (!patientExists)
+//         throw new Exception($"Patient with ID {dto.PatientID} does not exist");
+
+//     var entity = new CarePlan
+//     {
+//         PatientID = dto.PatientID,
+//         ProgramID = dto.ProgramID,
+//         PlanName = dto.PlanName,
+//         Description = dto.Description,
+//         StartDate = dto.StartDate,
+//         EndDate = dto.EndDate,
+//         Status = CarePlanStatus.Active
+//     };
+
+//     await _repository.AddCarePlanAsync(entity);
+
+//     await _auditLogService.LogAsync(entity.PatientID, "CREATE", "CarePlan", entity.CarePlanID,
+//         $"Care plan '{entity.PlanName}' created for patient '{entity.PatientID}'.");
+
+//     return new CarePlanResponseDTO
+//     {
+//         PlanName = entity.PlanName,
+//         Description = entity.Description,
+//         Status = entity.Status,
+//         StartDate = entity.StartDate,
+//         EndDate = entity.EndDate
+//     };
+// }
+
 
         public async Task<CarePlanResponseDTO?> UpdateCarePlanAsync(int id, CarePlanUpdateDTO dto)
         {

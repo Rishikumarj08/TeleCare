@@ -95,11 +95,11 @@ namespace TeleCare.Exceptions
                 _logger.LogWarning(ex, "Invalid operation");
                 await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ApiConstants.InvalidRequest);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unhandled exception occurred");
-                await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, ApiConstants.InternalServerError);
-            }
+            // catch (Exception ex)
+            // {
+            //     _logger.LogError(ex, "Unhandled exception occurred");
+            //     await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, ApiConstants.InternalServerError);
+            // }
         }
 
         private static async Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, string message)

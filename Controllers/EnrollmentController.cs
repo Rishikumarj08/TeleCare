@@ -28,7 +28,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("{enrollmentId}")]
-        [Authorize(Roles = "Patient, Care Coordinator")]
+        [Authorize(Roles = "Patient, CareCoordinator")]
         public async Task<IActionResult> getEnrollmentDetailsByEnrollID(int enrollmentId)
         {
             if (enrollmentId <= 0) return BadRequest(EnrollmentConstants.InvalidEnrollmentId);
@@ -53,7 +53,7 @@ namespace TeleCare.Controllers
         }
 
         [HttpGet("filter")]
-        [Authorize(Roles = "Patient, Care Coordinator")]
+        [Authorize(Roles = "Patient, CareCoordinator")]
         public async Task<IActionResult> getFilteredEnrollmentRecords([FromQuery] EnrollmentQueryDto enrollmentQueryDto)
         {
             return Ok(await enrollmentService.getFilteredEnrollmentRecordsAsync(enrollmentQueryDto));

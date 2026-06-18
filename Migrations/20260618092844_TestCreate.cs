@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeleCare.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class TestCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -156,6 +156,42 @@ namespace TeleCare.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Claims",
+                columns: table => new
+                {
+                    ClaimID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    PayerID = table.Column<int>(type: "int", nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AmountBilled = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PayerID1 = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Claims", x => x.ClaimID);
+                    table.ForeignKey(
+                        name: "FK_Claims_Payers_PayerID",
+                        column: x => x.PayerID,
+                        principalTable: "Payers",
+                        principalColumn: "PayerID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Claims_Payers_PayerID1",
+                        column: x => x.PayerID1,
+                        principalTable: "Payers",
+                        principalColumn: "PayerID");
+                    table.ForeignKey(
+                        name: "FK_Claims_Users_PatientID",
+                        column: x => x.PatientID,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notifications",
                 columns: table => new
                 {
@@ -207,6 +243,29 @@ namespace TeleCare.Migrations
                         principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClaimID = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentID);
+                    table.ForeignKey(
+                        name: "FK_Payments_Claims_ClaimID",
+                        column: x => x.ClaimID,
+                        principalTable: "Claims",
+                        principalColumn: "ClaimID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,8 +366,7 @@ namespace TeleCare.Migrations
                     PatientID = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PatientUserID = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -318,55 +376,6 @@ namespace TeleCare.Migrations
                         column: x => x.PatientID,
                         principalTable: "Patients",
                         principalColumn: "PatientID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Charges_Users_PatientUserID",
-                        column: x => x.PatientUserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Claims",
-                columns: table => new
-                {
-                    ClaimID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientID = table.Column<int>(type: "int", nullable: false),
-                    PayerID = table.Column<int>(type: "int", nullable: false),
-                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AmountBilled = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PatientUserID = table.Column<int>(type: "int", nullable: false),
-                    PayerID1 = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Claims", x => x.ClaimID);
-                    table.ForeignKey(
-                        name: "FK_Claims_Patients_PatientID",
-                        column: x => x.PatientID,
-                        principalTable: "Patients",
-                        principalColumn: "PatientID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Claims_Payers_PayerID",
-                        column: x => x.PayerID,
-                        principalTable: "Payers",
-                        principalColumn: "PayerID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Claims_Payers_PayerID1",
-                        column: x => x.PayerID1,
-                        principalTable: "Payers",
-                        principalColumn: "PayerID");
-                    table.ForeignKey(
-                        name: "FK_Claims_Users_PatientUserID",
-                        column: x => x.PatientUserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -502,29 +511,6 @@ namespace TeleCare.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    PaymentID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClaimID = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.PaymentID);
-                    table.ForeignKey(
-                        name: "FK_Payments_Claims_ClaimID",
-                        column: x => x.ClaimID,
-                        principalTable: "Claims",
-                        principalColumn: "ClaimID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TelemetryPoints",
                 columns: table => new
                 {
@@ -652,19 +638,9 @@ namespace TeleCare.Migrations
                 column: "PatientID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Charges_PatientUserID",
-                table: "Charges",
-                column: "PatientUserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Claims_PatientID",
                 table: "Claims",
                 column: "PatientID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Claims_PatientUserID",
-                table: "Claims",
-                column: "PatientUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Claims_PayerID",

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using TeleCare.Dto;
 using TeleCare.Models;
 using TeleCare.Repository.Interface;
@@ -9,12 +10,17 @@ namespace TeleCare.Service.Implementation
     {
         private readonly IMedicationRepository _repository;
         private readonly IAuditLogService _auditLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MedicationService(IMedicationRepository repository, IAuditLogService auditLogService)
+        public MedicationService(IMedicationRepository repository, IAuditLogService auditLogService, IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _auditLogService = auditLogService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetCurrentUserId() =>
+            int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         public async Task<MedicationResponseDto?> CreateMedicationAsync(int patientId, MedicationRequestDto dto)
         {
@@ -22,6 +28,10 @@ namespace TeleCare.Service.Implementation
                 return null;
 
             if (dto.EndAt.HasValue && dto.EndAt < dto.StartAt)
+                return null;
+
+            var prescribedBy = GetCurrentUserId();
+            if (prescribedBy <= 0)
                 return null;
 
             var entity = new Medication
@@ -33,7 +43,8 @@ namespace TeleCare.Service.Implementation
                 Route = dto.Route,
                 StartAt = dto.StartAt,
                 EndAt = dto.EndAt,
-                Status = dto.Status
+                Status = dto.Status,
+                PrescribedBy = prescribedBy
             };
 
             var result = await _repository.CreateMedicationAsync(entity);
@@ -77,7 +88,7 @@ namespace TeleCare.Service.Implementation
 
             if (updated == null) return null;
 
-            await _auditLogService.LogAsync(0, "UPDATE", "Medication", id,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "UPDATE", "Medication", id,
                 $"Medication '{id}' updated.");
 
             return Map(updated);
@@ -100,6 +111,7 @@ namespace TeleCare.Service.Implementation
                 Route = m.Route,
                 StartAt = m.StartAt,
                 EndAt = m.EndAt,
+                PrescribedBy = m.PrescribedBy,
                 Status = m.Status,
                 StatusLabel = m.Status.ToString()
             };

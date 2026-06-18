@@ -1,5 +1,6 @@
 namespace TeleCare.Service.Implementation
 {
+    using System.Security.Claims;
     using TeleCare.Constants;
     using TeleCare.DTO;
     using TeleCare.Exceptions;
@@ -11,12 +12,17 @@ namespace TeleCare.Service.Implementation
     {
         private readonly IRuleRepository _ruleRepository;
         private readonly IAuditLogService _auditLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RuleService(IRuleRepository ruleRepository, IAuditLogService auditLogService)
+        public RuleService(IRuleRepository ruleRepository, IAuditLogService auditLogService, IHttpContextAccessor httpContextAccessor)
         {
             _ruleRepository = ruleRepository;
             _auditLogService = auditLogService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetCurrentUserId() =>
+            int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         public async Task<List<RuleResponseDto>> GetAllRulesAsync()
         {
@@ -55,7 +61,7 @@ namespace TeleCare.Service.Implementation
             };
 
             await _ruleRepository.AddRuleAsync(rule);
-            await _auditLogService.LogAsync(0, "CREATE", "Rule", rule.RuleID,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "CREATE", "Rule", rule.RuleID,
                 $"Rule '{rule.Name}' created with status '{rule.Status}'.");
         }
 
@@ -75,7 +81,7 @@ namespace TeleCare.Service.Implementation
             rule.Status = ruleDto.Status;
 
             await _ruleRepository.UpdateRuleAsync(rule);
-            await _auditLogService.LogAsync(0, "UPDATE", "Rule", ruleId,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "UPDATE", "Rule", ruleId,
                 $"Rule '{rule.Name}' updated with status '{rule.Status}'.");
         }
 
@@ -86,7 +92,7 @@ namespace TeleCare.Service.Implementation
                 throw new NotFoundException(AppConstants.RuleNotFound);
 
             await _ruleRepository.DeleteRuleAsync(rule);
-            await _auditLogService.LogAsync(0, "DELETE", "Rule", ruleId,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "DELETE", "Rule", ruleId,
                 $"Rule '{rule.Name}' deleted.");
         }
 

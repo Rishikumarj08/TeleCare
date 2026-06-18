@@ -15,6 +15,9 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// allow services to access HttpContext (used to read JWT claims in services)
+builder.Services.AddHttpContextAccessor();
+
 //  CORS Configuration
 builder.Services.AddCors(options =>
 {

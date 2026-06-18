@@ -243,9 +243,6 @@ namespace TeleCare.Migrations
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientUserID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -253,8 +250,6 @@ namespace TeleCare.Migrations
                     b.HasKey("ChargeID");
 
                     b.HasIndex("PatientID");
-
-                    b.HasIndex("PatientUserID");
 
                     b.ToTable("Charges");
                 });
@@ -276,9 +271,6 @@ namespace TeleCare.Migrations
                     b.Property<int>("PatientID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientUserID")
-                        .HasColumnType("int");
-
                     b.Property<int>("PayerID")
                         .HasColumnType("int");
 
@@ -295,8 +287,6 @@ namespace TeleCare.Migrations
                     b.HasKey("ClaimID");
 
                     b.HasIndex("PatientID");
-
-                    b.HasIndex("PatientUserID");
 
                     b.HasIndex("PayerID");
 
@@ -943,15 +933,9 @@ namespace TeleCare.Migrations
 
             modelBuilder.Entity("TeleCare.Model.Charge", b =>
                 {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
+                    b.HasOne("TeleCare.Model.PatientModel", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TeleCare.Model.User", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientUserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -960,15 +944,9 @@ namespace TeleCare.Migrations
 
             modelBuilder.Entity("TeleCare.Model.Claim", b =>
                 {
-                    b.HasOne("TeleCare.Model.PatientModel", null)
-                        .WithMany()
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TeleCare.Model.User", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientUserID")
+                        .HasForeignKey("PatientID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

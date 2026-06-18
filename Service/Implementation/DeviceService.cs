@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using TeleCare.DTO;
 using TeleCare.Model;
 using TeleCare.Repository.Interface;
@@ -10,12 +11,17 @@ namespace TeleCare.Service.Implementation
     {
         private readonly IDeviceRepository repository;
         private readonly IAuditLogService _auditLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DeviceService(IDeviceRepository repository, IAuditLogService auditLogService)
+        public DeviceService(IDeviceRepository repository, IAuditLogService auditLogService, IHttpContextAccessor httpContextAccessor)
         {
             this.repository = repository;
             _auditLogService = auditLogService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetCurrentUserId() =>
+            int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         public async Task<DeviceResponseDto> createDeviceRecordAsync(DeviceCreateDto deviceCreateDto)
         {
@@ -31,7 +37,7 @@ namespace TeleCare.Service.Implementation
 
             Validate(entity);
             var result = await repository.createDeviceRecordAsync(entity);
-            await _auditLogService.LogAsync(0, "CREATE", "Device", result.DeviceID,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "CREATE", "Device", result.DeviceID,
                 $"Device '{result.SerialNumber}' of type '{result.DeviceType}' created.");
             return MapToDto(result);
         }
@@ -53,7 +59,7 @@ namespace TeleCare.Service.Implementation
 
             Validate(entity);
             var updated = await repository.updateDeviceRecordByDeviceIdAsync(entity);
-            await _auditLogService.LogAsync(0, "UPDATE", "Device", deviceId,
+            await _auditLogService.LogAsync(GetCurrentUserId(), "UPDATE", "Device", deviceId,
                 $"Device '{deviceId}' updated. Status: '{deviceUpdateDto.Status}'.");
             return MapToDto(updated);
         }
@@ -64,7 +70,7 @@ namespace TeleCare.Service.Implementation
             if (entity != null)
             {
                 await repository.deleteDeviceRecordAsync(entity);
-                await _auditLogService.LogAsync(0, "DELETE", "Device", deviceId,
+                await _auditLogService.LogAsync(GetCurrentUserId(), "DELETE", "Device", deviceId,
                     $"Device '{entity.SerialNumber}' deleted.");
             }
         }
